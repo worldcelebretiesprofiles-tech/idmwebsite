@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { motion, useScroll, useTransform } from "motion/react";
 import { useRef } from "react";
+import { Magnetic, Spotlight } from "./interactions";
 import {
   ArrowRight,
   ArrowUpRight,
@@ -49,6 +50,7 @@ export function Hero() {
   return (
     <section ref={ref} className="relative isolate overflow-hidden bg-hero pb-24 pt-40 text-white lg:pb-40 lg:pt-48">
       <div className="pointer-events-none absolute inset-0 grid-lines opacity-60" aria-hidden />
+      <Spotlight />
       <motion.div style={{ y }} className="pointer-events-none absolute -left-32 top-24 h-[500px] w-[500px] rounded-full bg-royal/50 blur-3xl animate-float" aria-hidden />
       <motion.div style={{ y }} className="pointer-events-none absolute -right-24 top-40 h-[420px] w-[420px] rounded-full bg-gold/20 blur-3xl animate-float" aria-hidden />
 
@@ -89,20 +91,25 @@ export function Hero() {
             transition={{ duration: 0.7, delay: 0.65 }}
             className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row"
           >
-            <Link
-              to="/contact"
-              className="group inline-flex items-center gap-2 rounded-full bg-gold px-7 py-4 text-base font-semibold text-navy-deep shadow-gold-glow transition-transform hover:-translate-y-0.5"
-            >
-              Get Free Consultation
-              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-            </Link>
-            <Link
-              to="/services"
-              className="group inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-7 py-4 text-base font-semibold text-white backdrop-blur transition-colors hover:bg-white/10"
-            >
-              View Our Services
-              <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-            </Link>
+            <Magnetic>
+              <Link
+                to="/contact"
+                className="group relative inline-flex items-center gap-2 overflow-hidden rounded-full bg-gold px-7 py-4 text-base font-semibold text-navy-deep shadow-gold-glow transition-transform hover:-translate-y-0.5"
+              >
+                <span className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/50 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
+                <span className="relative">Get Free Consultation</span>
+                <ArrowRight className="relative h-4 w-4 transition-transform group-hover:translate-x-1" />
+              </Link>
+            </Magnetic>
+            <Magnetic>
+              <Link
+                to="/services"
+                className="group inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-7 py-4 text-base font-semibold text-white backdrop-blur transition-colors hover:bg-white/10"
+              >
+                View Our Services
+                <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              </Link>
+            </Magnetic>
           </motion.div>
 
           {/* Trust badges */}
@@ -419,18 +426,19 @@ export function Services() {
   );
 }
 
-/* -------------------- WHY CHOOSE US -------------------- */
+/* -------------------- WHY CHOOSE US (stacked scroll) -------------------- */
 export function WhyChooseUs() {
   const items = [
-    { Icon: TrendingUp, t: "ROI Focused", d: "Every deliverable is tied to a revenue metric." },
-    { Icon: Users, t: "Senior Team", d: "You work with strategists — never juniors on autopilot." },
-    { Icon: LineChart, t: "Transparent Reporting", d: "Live dashboards. No jargon. No black boxes." },
-    { Icon: Zap, t: "AI-Powered", d: "AI baked into research, creative and automation." },
-    { Icon: Headphones, t: "Fast Support", d: "Slack, WhatsApp, calls — answers in hours." },
-    { Icon: ShieldCheck, t: "Trusted Partner", d: "Google & Meta certified, 200+ five-star reviews." },
+    { Icon: TrendingUp, t: "ROI Focused", d: "Every deliverable is tied to a revenue metric — not a vanity chart." },
+    { Icon: Users, t: "Senior Team", d: "You work with strategists and principals, never juniors on autopilot." },
+    { Icon: LineChart, t: "Transparent Reporting", d: "Live dashboards. Weekly summaries. No jargon, no black boxes." },
+    { Icon: Zap, t: "AI-Powered", d: "AI baked into research, creative production, and workflow automation." },
+    { Icon: Headphones, t: "Fast Support", d: "Slack, WhatsApp, calls — answers in hours, not business days." },
+    { Icon: ShieldCheck, t: "Trusted Partner", d: "Google & Meta certified. 200+ five-star reviews. Built to last." },
   ];
+
   return (
-    <section className="bg-white py-24 lg:py-32">
+    <section className="relative bg-white py-24 lg:py-32">
       <div className="container-page">
         <div className="mx-auto max-w-2xl text-center">
           <Reveal>
@@ -438,25 +446,72 @@ export function WhyChooseUs() {
             <h2 className="mt-5 font-display text-4xl font-bold text-navy-deep sm:text-5xl">
               Built to be your long-term growth partner.
             </h2>
+            <p className="mt-4 text-muted-foreground">Scroll to explore what makes IDM different.</p>
           </Reveal>
         </div>
-        <div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+
+        <div className="relative mt-16" style={{ height: `${items.length * 90}vh` }}>
           {items.map((it, i) => (
-            <Reveal key={it.t} delay={i * 0.05}>
-              <div className="group relative flex h-full items-start gap-4 rounded-3xl border border-black/5 bg-surface p-6 transition-all hover:-translate-y-1 hover:bg-white hover:shadow-premium">
-                <div className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-navy-deep text-gold transition-transform group-hover:rotate-6">
-                  <it.Icon className="h-5 w-5" />
-                </div>
-                <div>
-                  <h3 className="font-display text-lg font-bold text-navy-deep">{it.t}</h3>
-                  <p className="mt-1 text-sm leading-relaxed text-muted-foreground">{it.d}</p>
-                </div>
-              </div>
-            </Reveal>
+            <StackedCard key={it.t} index={i} total={items.length} item={it} />
           ))}
         </div>
       </div>
     </section>
+  );
+}
+
+function StackedCard({
+  index,
+  total,
+  item,
+}: {
+  index: number;
+  total: number;
+  item: { Icon: React.ComponentType<{ className?: string }>; t: string; d: string };
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "end start"],
+  });
+  const scale = useTransform(scrollYProgress, [0, 0.5, 1], [0.94, 1, 0.9]);
+  const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0.4, 1, 1, 0.6]);
+  const gradients = [
+    "from-navy-deep to-royal",
+    "from-royal to-navy",
+    "from-navy to-navy-deep",
+    "from-navy-deep via-royal to-navy",
+    "from-royal via-navy-deep to-navy",
+    "from-navy to-royal",
+  ];
+  return (
+    <div
+      ref={ref}
+      className="sticky mx-auto max-w-4xl"
+      style={{ top: `${80 + index * 24}px`, marginBottom: `-${(total - index - 1) * 16}px` }}
+    >
+      <motion.article
+        style={{ scale, opacity }}
+        className={`relative overflow-hidden rounded-[2rem] bg-gradient-to-br ${gradients[index % gradients.length]} p-8 text-white shadow-premium sm:p-12`}
+      >
+        <div className="pointer-events-none absolute inset-0 grid-lines opacity-30" aria-hidden />
+        <div className="pointer-events-none absolute -right-16 -top-16 h-64 w-64 rounded-full bg-gold/20 blur-3xl" aria-hidden />
+        <div className="relative flex items-start gap-6">
+          <div className="grid h-16 w-16 shrink-0 place-items-center rounded-2xl bg-gold text-navy-deep shadow-gold-glow">
+            <item.Icon className="h-7 w-7" />
+          </div>
+          <div className="min-w-0 flex-1">
+            <div className="flex items-center gap-3 text-gold">
+              <span className="font-display text-sm font-bold">{String(index + 1).padStart(2, "0")}</span>
+              <span className="h-px w-8 bg-gold" />
+              <span className="text-[11px] font-semibold uppercase tracking-widest">Why IDM</span>
+            </div>
+            <h3 className="mt-3 font-display text-3xl font-bold sm:text-4xl">{item.t}</h3>
+            <p className="mt-3 max-w-xl text-lg leading-relaxed text-white/80">{item.d}</p>
+          </div>
+        </div>
+      </motion.article>
+    </div>
   );
 }
 
