@@ -18,99 +18,54 @@ import {
 } from "lucide-react";
 import { BrandMark } from "./BrandMark";
 
-type MenuItem = { label: string; desc?: string };
-type MenuGroup = { title: string; icon: React.ComponentType<{ className?: string }>; items: MenuItem[] };
-
-const MEGA: MenuGroup[] = [
+const SERVICES_CATEGORIES = [
   {
     title: "Digital Marketing",
-    icon: BarChart3,
+    hasChevron: true,
     items: [
-      { label: "SEO", desc: "Rank on Google" },
-      { label: "Local SEO", desc: "Own your city" },
-      { label: "Google Ads", desc: "High-intent traffic" },
-      { label: "Meta Ads", desc: "Facebook & Instagram" },
-      { label: "Social Media Marketing" },
-      { label: "Content Marketing" },
-      { label: "Email Marketing" },
-      { label: "YouTube Marketing" },
+      { label: "Google Ads", href: "/services" },
+      { label: "Lead Generation", href: "/services" },
+      { label: "Social Media Marketing", href: "/services" },
+      { label: "Search Engine Optimization", href: "/services" },
+      { label: "Local SEO", href: "/services" },
+      { label: "AI SEO", href: "/services" },
+      { label: "Social Media Management", href: "/services" },
+      { label: "Content Marketing", href: "/services" },
+      { label: "Email Marketing", href: "/services" },
     ],
   },
   {
-    title: "Website Development",
-    icon: Globe,
+    title: "Web Solutions",
+    hasChevron: true,
     items: [
-      { label: "Business Websites" },
-      { label: "Corporate Websites" },
-      { label: "Landing Pages" },
-      { label: "Ecommerce", desc: "Shopify & custom" },
-      { label: "WordPress" },
-      { label: "Web Applications" },
+      { label: "Business Websites", href: "/services" },
+      { label: "Corporate Websites", href: "/services" },
+      { label: "Landing Pages", href: "/services" },
+      { label: "Ecommerce", href: "/services" },
+      { label: "WordPress Solutions", href: "/services" },
+      { label: "Web Applications", href: "/services" },
     ],
   },
   {
-    title: "Software & Apps",
-    icon: Code2,
+    title: "Branding",
+    hasChevron: false,
     items: [
-      { label: "CRM Solutions" },
-      { label: "ERP Systems" },
-      { label: "Inventory & Billing" },
-      { label: "Hospital Management" },
-      { label: "School Management" },
-      { label: "Custom Software" },
+      { label: "Logo Design", href: "/services" },
+      { label: "Brand Identity", href: "/services" },
+      { label: "Social Creatives", href: "/services" },
+      { label: "Video Editing", href: "/services" },
+      { label: "Motion Graphics", href: "/services" },
     ],
   },
   {
-    title: "Mobile Apps",
-    icon: Smartphone,
+    title: "Influencer Marketing",
+    hasChevron: false,
     items: [
-      { label: "Android" },
-      { label: "iOS" },
-      { label: "Flutter" },
-      { label: "React Native" },
-      { label: "Progressive Web Apps" },
-    ],
-  },
-  {
-    title: "Branding & Creative",
-    icon: Palette,
-    items: [
-      { label: "Logo Design" },
-      { label: "Brand Identity" },
-      { label: "Social Creatives" },
-      { label: "Video Editing" },
-      { label: "Motion Graphics" },
-    ],
-  },
-  {
-    title: "AI & Automation",
-    icon: Sparkles,
-    items: [
-      { label: "AI Chatbots" },
-      { label: "CRM Automation" },
-      { label: "Workflow Automation" },
-      { label: "WhatsApp Automation" },
-      { label: "AI Solutions" },
-    ],
-  },
-  {
-    title: "Local Business",
-    icon: MapPin,
-    items: [
-      { label: "Google Business Profile" },
-      { label: "Google Maps Ranking" },
-      { label: "Citation Building" },
-      { label: "Reputation Management" },
-    ],
-  },
-  {
-    title: "Consulting",
-    icon: Compass,
-    items: [
-      { label: "Business Consulting" },
-      { label: "Digital Strategy" },
-      { label: "Technology Consulting" },
-      { label: "AI Transformation" },
+      { label: "Influencer Outreach", href: "/services" },
+      { label: "Campaign Strategy", href: "/services" },
+      { label: "Content Creation", href: "/services" },
+      { label: "Performance Tracking", href: "/services" },
+      { label: "Platform Partnerships", href: "/services" },
     ],
   },
 ];
@@ -129,6 +84,7 @@ export function SiteNavbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [megaOpen, setMegaOpen] = useState(false);
+  const [activeCategory, setActiveCategory] = useState("Digital Marketing");
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -172,17 +128,88 @@ export function SiteNavbar() {
             >
               {NAV.map((item) =>
                 item.hasMega ? (
-                  <button
-                    key={item.label}
-                    onMouseEnter={() => setMegaOpen(true)}
-                    onClick={() => setMegaOpen((v) => !v)}
-                    className={`group inline-flex items-center gap-1 rounded-full px-4 py-2 text-sm font-medium transition-colors ${
-                      scrolled ? "text-navy-deep hover:bg-navy-deep/5" : "text-white/90 hover:text-white"
-                    }`}
-                  >
-                    {item.label}
-                    <ChevronDown className={`h-4 w-4 transition-transform ${megaOpen ? "rotate-180" : ""}`} />
-                  </button>
+                  <div key={item.label} className="relative">
+                    <button
+                      onMouseEnter={() => setMegaOpen(true)}
+                      onClick={() => setMegaOpen((v) => !v)}
+                      className={`group inline-flex items-center gap-1 rounded-full px-4 py-2 text-sm font-medium transition-colors ${
+                        scrolled ? "text-navy-deep hover:bg-navy-deep/5" : "text-white/90 hover:text-white"
+                      }`}
+                    >
+                      {item.label}
+                      <ChevronDown className={`h-4 w-4 transition-transform ${megaOpen ? "rotate-180" : ""}`} />
+                    </button>
+
+                    {/* Mega menu */}
+                    <AnimatePresence>
+                      {megaOpen && (
+                        <motion.div
+                          initial={{ opacity: 0, y: 12 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: 12 }}
+                          transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
+                          onMouseEnter={() => setMegaOpen(true)}
+                          onMouseLeave={() => setMegaOpen(false)}
+                          className="absolute left-[-120px] top-full mt-3 hidden w-[620px] overflow-hidden rounded-[2rem] border border-black/5 bg-white shadow-premium lg:flex z-50"
+                        >
+                          {/* Left Pane (Categories) */}
+                          <div className="w-[260px] bg-white p-6 border-r border-black/5 flex flex-col gap-2">
+                            {SERVICES_CATEGORIES.map((cat) => {
+                              const isActive = activeCategory === cat.title;
+                              return (
+                                <button
+                                  key={cat.title}
+                                  onMouseEnter={() => setActiveCategory(cat.title)}
+                                  className={`flex items-center justify-between rounded-xl px-4 py-3 text-left text-sm font-semibold transition-all duration-200 ${
+                                    isActive
+                                      ? "bg-royal/5 text-royal"
+                                      : "text-ink hover:bg-black/5 hover:text-navy-deep"
+                                  }`}
+                                >
+                                  <span>{cat.title}</span>
+                                  {cat.hasChevron && (
+                                    <ChevronDown
+                                      className={`h-4 w-4 transition-transform duration-200 ${
+                                        isActive ? "text-royal rotate-180" : "text-muted-foreground"
+                                      }`}
+                                    />
+                                  )}
+                                </button>
+                              );
+                            })}
+                          </div>
+
+                          {/* Right Pane (Active Category Items) */}
+                          <div className="flex-1 bg-white p-6 min-h-[380px] flex flex-col justify-between">
+                            <div className="space-y-1">
+                              {SERVICES_CATEGORIES.find((c) => c.title === activeCategory)?.items.map((it) => (
+                                <Link
+                                  key={it.label}
+                                  to={it.href}
+                                  onClick={() => setMegaOpen(false)}
+                                  className="block rounded-xl px-4 py-2.5 text-sm font-medium text-ink transition-colors hover:bg-gold-soft/50 hover:text-navy-deep"
+                                >
+                                  {it.label}
+                                </Link>
+                              ))}
+                            </div>
+
+                            {/* Subtle Footer Callout */}
+                            <div className="mt-4 border-t border-black/5 pt-4 flex items-center justify-between text-xs">
+                              <span className="text-muted-foreground">Looking for custom solutions?</span>
+                              <Link
+                                to="/contact"
+                                onClick={() => setMegaOpen(false)}
+                                className="font-bold text-royal hover:underline flex items-center gap-0.5"
+                              >
+                                Talk to our experts <ArrowRight className="h-3 w-3" />
+                              </Link>
+                            </div>
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
                 ) : (
                   <Link
                     key={item.label}
@@ -221,65 +248,6 @@ export function SiteNavbar() {
               </button>
             </div>
           </div>
-
-          {/* Mega menu */}
-          <AnimatePresence>
-            {megaOpen && (
-              <motion.div
-                initial={{ opacity: 0, y: -8 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -8 }}
-                transition={{ duration: 0.18 }}
-                onMouseEnter={() => setMegaOpen(true)}
-                onMouseLeave={() => setMegaOpen(false)}
-                className="mx-auto mt-3 hidden max-w-6xl overflow-hidden rounded-3xl glass shadow-premium lg:block"
-              >
-                <div className="grid grid-cols-4 gap-6 p-8">
-                  {MEGA.map((group) => (
-                    <div key={group.title}>
-                      <div className="mb-3 flex items-center gap-2 text-navy-deep">
-                        <span className="grid h-8 w-8 place-items-center rounded-lg bg-navy-deep/5">
-                          <group.icon className="h-4 w-4" />
-                        </span>
-                        <h4 className="text-xs font-bold uppercase tracking-widest">{group.title}</h4>
-                      </div>
-                      <ul className="space-y-1">
-                        {group.items.slice(0, 6).map((it) => (
-                          <li key={it.label}>
-                            <Link
-                              to="/services"
-                              onClick={() => setMegaOpen(false)}
-                              className="group/link block rounded-lg px-2 py-1.5 text-sm text-ink transition-colors hover:bg-gold-soft/60"
-                            >
-                              <span className="font-medium">{it.label}</span>
-                              {it.desc && (
-                                <span className="ml-2 text-xs text-muted-foreground">{it.desc}</span>
-                              )}
-                            </Link>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  ))}
-                </div>
-                <div className="flex items-center justify-between gap-4 border-t border-black/5 bg-navy-deep px-8 py-5 text-white">
-                  <div className="flex items-center gap-3">
-                    <Search className="h-5 w-5 text-gold" />
-                    <p className="text-sm">
-                      Not sure where to start? Book a free 30-minute growth audit.
-                    </p>
-                  </div>
-                  <Link
-                    to="/contact"
-                    onClick={() => setMegaOpen(false)}
-                    className="inline-flex items-center gap-2 rounded-full bg-gold px-4 py-2 text-sm font-semibold text-navy-deep"
-                  >
-                    Book Free Audit <ArrowRight className="h-4 w-4" />
-                  </Link>
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
         </div>
       </motion.div>
 

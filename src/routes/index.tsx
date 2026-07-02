@@ -11,9 +11,9 @@ import {
   CaseStudies,
   Technologies,
   Testimonials,
+  ExpertTeam,
   Pricing,
   FAQ,
-  BlogPreview,
   ContactSection,
   FinalCTA,
 } from "@/components/site/sections";
@@ -36,9 +36,9 @@ function Home() {
       <CaseStudies />
       <Technologies />
       <Testimonials />
+      <ExpertTeam />
       <Pricing />
       <FAQ />
-      <BlogPreview />
       <ContactSection />
       <FinalCTA />
     </>

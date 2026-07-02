@@ -79,9 +79,12 @@ export function SiteFooter() {
             </form>
 
             <div className="mt-6 space-y-2 text-sm text-white/70">
-              <p className="flex items-center gap-2"><Phone className="h-4 w-4 text-gold" /> +91 00000 00000</p>
-              <p className="flex items-center gap-2"><Mail className="h-4 w-4 text-gold" /> hello@idmsmarttech.com</p>
-              <p className="flex items-center gap-2"><MapPin className="h-4 w-4 text-gold" /> India · Remote worldwide</p>
+              <p className="flex items-center gap-2"><Phone className="h-4 w-4 text-gold" /> <a href="tel:+918519837818" className="hover:text-gold transition-colors">+91 8519837818</a></p>
+              <p className="flex items-center gap-2"><Mail className="h-4 w-4 text-gold" /> <a href="mailto:hello@idmsmarttech.com" className="hover:text-gold transition-colors">hello@idmsmarttech.com</a></p>
+              <p className="flex items-start gap-2">
+                <MapPin className="h-4 w-4 shrink-0 text-gold mt-1" />
+                <span>First Floor, 23-98/A, beside Sri Sai Jyothsna Mess, Madhura Nagar, Shamshabad, Hyderabad, Telangana 501218</span>
+              </p>
             </div>
           </div>
         </div>

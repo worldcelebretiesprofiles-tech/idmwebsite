@@ -36,6 +36,10 @@ import {
   ShieldCheck,
   LineChart,
   Headphones,
+  Linkedin,
+  Twitter,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
 import { useState } from "react";
 import { Reveal, Counter, SectionEyebrow } from "./motion-primitives";
@@ -210,7 +214,7 @@ export function TrustedClients() {
 /* -------------------- ABOUT -------------------- */
 export function About() {
   return (
-    <section id="about" className="bg-surface py-24 lg:py-32">
+    <section id="about" className="bg-surface py-16 lg:py-20">
       <div className="container-page">
         <div className="grid items-center gap-16 lg:grid-cols-2">
           <Reveal>
@@ -295,7 +299,7 @@ export function Industries() {
     { n: "Startups", Icon: Rocket },
   ];
   return (
-    <section className="bg-white py-24 lg:py-32">
+    <section className="bg-white py-16 lg:py-20">
       <div className="container-page">
         <div className="mx-auto max-w-2xl text-center">
           <Reveal>
@@ -381,7 +385,7 @@ export function Services() {
   ];
 
   return (
-    <section id="services" className="relative overflow-hidden bg-surface py-24 lg:py-32">
+    <section id="services" className="relative overflow-hidden bg-surface py-16 lg:py-20">
       <div className="container-page relative">
         <div className="flex flex-col items-start justify-between gap-6 lg:flex-row lg:items-end">
           <Reveal>
@@ -437,22 +441,30 @@ export function WhyChooseUs() {
     { Icon: ShieldCheck, t: "Trusted Partner", d: "Google & Meta certified. 200+ five-star reviews. Built to last." },
   ];
 
+  const containerRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end end"],
+  });
+
   return (
-    <section className="relative bg-white py-24 lg:py-32">
-      <div className="container-page">
-        <div className="mx-auto max-w-2xl text-center">
-          <Reveal>
-            <SectionEyebrow>Why choose us</SectionEyebrow>
-            <h2 className="mt-5 font-display text-4xl font-bold text-navy-deep sm:text-5xl">
-              Built to be your long-term growth partner.
-            </h2>
-            <p className="mt-4 text-muted-foreground">Scroll to explore what makes IDM different.</p>
-          </Reveal>
+    <section ref={containerRef} className="relative bg-white" style={{ height: "900vh" }}>
+      <div className="sticky top-0 flex h-screen w-full flex-col justify-start overflow-hidden pt-20">
+        <div className="container-page">
+          <div className="mx-auto max-w-2xl text-center">
+            <Reveal>
+              <SectionEyebrow>Why choose us</SectionEyebrow>
+              <h2 className="mt-5 font-display text-4xl font-bold text-navy-deep sm:text-5xl">
+                Built to be your long-term growth partner.
+              </h2>
+              <p className="mt-4 text-muted-foreground">Scroll to explore what makes IDM different.</p>
+            </Reveal>
+          </div>
         </div>
 
-        <div className="relative mt-16" style={{ height: `${items.length * 90}vh` }}>
+        <div className="relative mx-auto mt-12 w-full max-w-4xl h-[480px]">
           {items.map((it, i) => (
-            <StackedCard key={it.t} index={i} total={items.length} item={it} />
+            <StackedCard key={it.t} index={i} total={items.length} item={it} progress={scrollYProgress} />
           ))}
         </div>
       </div>
@@ -464,18 +476,57 @@ function StackedCard({
   index,
   total,
   item,
+  progress,
 }: {
   index: number;
   total: number;
   item: { Icon: React.ComponentType<{ className?: string }>; t: string; d: string };
+  progress: any;
 }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start end", "end start"],
-  });
-  const scale = useTransform(scrollYProgress, [0, 0.5, 1], [0.94, 1, 0.9]);
-  const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0.4, 1, 1, 0.6]);
+  const startReveal = 0.05 + index * 0.15;
+  const endReveal = startReveal + 0.10;
+
+  const y = index === 0
+    ? 0
+    : useTransform(
+        progress,
+        [0, Math.max(0, startReveal - 0.01), startReveal, endReveal],
+        [1000, 1000, 1000, 0]
+      );
+
+  const inputPoints: number[] = [0];
+  const scalePoints: number[] = [index === 0 ? 1 : 0.94];
+  const opacityPoints: number[] = [index === 0 ? 1 : 0.4];
+
+  if (index > 0) {
+    inputPoints.push(startReveal, endReveal);
+    scalePoints.push(0.94, 1.0);
+    opacityPoints.push(0.4, 1.0);
+  }
+
+  for (let j = index + 1; j < total; j++) {
+    const nextStart = 0.05 + j * 0.15;
+    const nextEnd = nextStart + 0.10;
+    
+    inputPoints.push(nextStart, nextEnd);
+    
+    const stepsAfter = j - index;
+    const targetScale = Math.max(0.86, 1.0 - stepsAfter * 0.035);
+    const targetOpacity = Math.max(0.4, 1.0 - stepsAfter * 0.2);
+    
+    scalePoints.push(1.0 - (stepsAfter - 1) * 0.035, targetScale);
+    opacityPoints.push(1.0 - (stepsAfter - 1) * 0.2, targetOpacity);
+  }
+
+  if (inputPoints[inputPoints.length - 1] < 1.0) {
+    inputPoints.push(1.0);
+    scalePoints.push(scalePoints[scalePoints.length - 1]);
+    opacityPoints.push(opacityPoints[opacityPoints.length - 1]);
+  }
+
+  const scale = useTransform(progress, inputPoints, scalePoints);
+  const opacity = useTransform(progress, inputPoints, opacityPoints);
+
   const gradients = [
     "from-navy-deep to-royal",
     "from-royal to-navy",
@@ -484,14 +535,19 @@ function StackedCard({
     "from-royal via-navy-deep to-navy",
     "from-navy to-royal",
   ];
+
   return (
-    <div
-      ref={ref}
-      className="sticky mx-auto max-w-4xl"
-      style={{ top: `${80 + index * 24}px`, marginBottom: `-${(total - index - 1) * 16}px` }}
+    <motion.div
+      style={{
+        y,
+        scale,
+        opacity,
+        zIndex: index,
+        top: `${index * 24}px`,
+      }}
+      className="absolute left-0 right-0 mx-auto max-w-4xl px-4 sm:px-6 lg:px-8"
     >
-      <motion.article
-        style={{ scale, opacity }}
+      <article
         className={`relative overflow-hidden rounded-[2rem] bg-gradient-to-br ${gradients[index % gradients.length]} p-8 text-white shadow-premium sm:p-12`}
       >
         <div className="pointer-events-none absolute inset-0 grid-lines opacity-30" aria-hidden />
@@ -510,27 +566,22 @@ function StackedCard({
             <p className="mt-3 max-w-xl text-lg leading-relaxed text-white/80">{item.d}</p>
           </div>
         </div>
-      </motion.article>
-    </div>
+      </article>
+    </motion.div>
   );
 }
 
-/* -------------------- PROCESS -------------------- */
+
 export function Process() {
   const steps = [
-    { t: "Discover", d: "Deep-dive workshops to map goals, market, and constraints." },
-    { t: "Research", d: "Competitor teardown, keyword and audience intelligence." },
-    { t: "Strategy", d: "Roadmap, channel mix, KPIs, and measurement plan." },
-    { t: "Design", d: "Brand-aligned UI/UX prototypes that convert." },
-    { t: "Development", d: "Ship fast, ship clean, ship measurable." },
-    { t: "Launch", d: "Coordinated launch with QA and analytics baked in." },
-    { t: "Optimize", d: "Weekly experiments to compound performance." },
-    { t: "Scale", d: "Automate ops and unlock new channels." },
+    { t: "Strategy", d: "Deep-dive workshop and growth roadmap planning." },
+    { t: "Execute", d: "Design, high-performance tech, and automated workflows." },
+    { t: "Launch", d: "Coordinated deployment with QA and analytics built-in." },
+    { t: "Optimize", d: "Weekly experimentation to scale and compound growth." },
   ];
   return (
-    <section className="relative overflow-hidden bg-navy-deep py-24 text-white lg:py-32">
-      <div className="pointer-events-none absolute inset-0 grid-lines opacity-40" aria-hidden />
-      <div className="pointer-events-none absolute -left-40 top-1/2 h-96 w-96 -translate-y-1/2 rounded-full bg-royal/40 blur-3xl" />
+    <section className="relative overflow-hidden bg-navy-deep py-16 lg:py-20 text-white">
+      <div className="pointer-events-none absolute inset-0 grid-lines opacity-20" aria-hidden />
       <div className="container-page relative">
         <div className="mx-auto max-w-2xl text-center">
           <Reveal>
@@ -538,42 +589,25 @@ export function Process() {
               <span className="h-1.5 w-1.5 rounded-full bg-gold" />
               <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-gold">Our Process</span>
             </div>
-            <h2 className="mt-5 font-display text-4xl font-bold text-balance sm:text-5xl">
-              A repeatable playbook that removes guesswork.
+            <h2 className="mt-5 font-display text-4xl font-bold text-balance">
+              Simple. Clear. Repeatable.
             </h2>
           </Reveal>
         </div>
 
-        <div className="relative mx-auto mt-16 max-w-5xl">
-          <div className="absolute left-1/2 top-0 hidden h-full w-px -translate-x-1/2 bg-white/10 lg:block">
-            <motion.div
-              initial={{ scaleY: 0 }}
-              whileInView={{ scaleY: 1 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 1.6, ease: "easeInOut" }}
-              className="h-full w-full origin-top bg-gold"
-            />
-          </div>
-          <ul className="space-y-6 lg:space-y-14">
-            {steps.map((s, i) => {
-              const left = i % 2 === 0;
-              return (
-                <li key={s.t} className="relative grid gap-4 lg:grid-cols-2 lg:gap-16">
-                  <Reveal className={left ? "lg:pr-12 lg:text-right" : "lg:col-start-2 lg:pl-12"}>
-                    <div className="rounded-3xl border border-white/10 bg-white/5 p-6 backdrop-blur">
-                      <div className="flex items-center gap-3 text-gold lg:justify-start" style={{ justifyContent: left ? "flex-end" : "flex-start" }}>
-                        <span className="font-display text-4xl font-bold">{String(i + 1).padStart(2, "0")}</span>
-                        <span className="h-px w-8 bg-gold" />
-                      </div>
-                      <h3 className="mt-3 font-display text-2xl font-bold">{s.t}</h3>
-                      <p className="mt-2 text-white/70">{s.d}</p>
-                    </div>
-                  </Reveal>
-                  <span className="absolute left-1/2 top-8 hidden h-4 w-4 -translate-x-1/2 rounded-full border-4 border-navy-deep bg-gold lg:block" />
-                </li>
-              );
-            })}
-          </ul>
+        <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          {steps.map((s, i) => (
+            <Reveal key={s.t} delay={i * 0.05}>
+              <div className="h-full rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur transition-all duration-300 hover:border-gold/30 hover:bg-white/10">
+                <div className="flex items-center gap-3 text-gold">
+                  <span className="font-display text-2xl font-bold">{String(i + 1).padStart(2, "0")}</span>
+                  <span className="h-px w-6 bg-gold" />
+                </div>
+                <h3 className="mt-3 font-display text-lg font-bold text-white">{s.t}</h3>
+                <p className="mt-2 text-sm text-white/70 leading-relaxed">{s.d}</p>
+              </div>
+            </Reveal>
+          ))}
         </div>
       </div>
     </section>
@@ -595,7 +629,7 @@ export function Portfolio() {
   const shown = active === "All" ? projects : projects.filter((p) => p.cat === active);
 
   return (
-    <section id="portfolio" className="bg-surface py-24 lg:py-32">
+    <section id="portfolio" className="bg-surface py-16 lg:py-20">
       <div className="container-page">
         <div className="flex flex-col items-start justify-between gap-6 lg:flex-row lg:items-end">
           <Reveal>
@@ -666,8 +700,20 @@ export function CaseStudies() {
     { c: "Solstice ERP", tag: "Software", metrics: [["Ops hours", "-40%"], ["Adoption", "94%"], ["NPS", "+31"]], story: "Custom ERP replaced 5 spreadsheets and 2 tools across 6 factories. Rollout in 90 days, adoption in 6 weeks." },
     { c: "Meridian Realty", tag: "Local SEO", metrics: [["Maps calls", "+287%"], ["Reviews", "+412"], ["Deals", "+3.4x"]], story: "12 area pages, GBP optimizations, and review automation put Meridian in the local 3-pack across 12 neighborhoods." },
   ];
+
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const scroll = (direction: "left" | "right") => {
+    if (scrollRef.current) {
+      const scrollAmount = 420;
+      scrollRef.current.scrollBy({
+        left: direction === "left" ? -scrollAmount : scrollAmount,
+        behavior: "smooth",
+      });
+    }
+  };
+
   return (
-    <section className="relative overflow-hidden bg-white py-24 lg:py-32">
+    <section className="relative overflow-hidden bg-white py-16 lg:py-20">
       <div className="container-page">
         <div className="flex flex-col items-start justify-between gap-6 lg:flex-row lg:items-end">
           <Reveal>
@@ -677,14 +723,32 @@ export function CaseStudies() {
             </h2>
           </Reveal>
           <Reveal delay={0.1}>
-            <Link to="/case-studies" className="inline-flex items-center gap-2 rounded-full border border-navy-deep/15 bg-white px-5 py-3 text-sm font-semibold text-navy-deep hover:bg-navy-deep/5">
-              All case studies <ArrowRight className="h-4 w-4" />
-            </Link>
+            <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => scroll("left")}
+                  className="grid h-11 w-11 place-items-center rounded-full border border-navy-deep/15 bg-white text-navy-deep transition-all hover:bg-navy-deep hover:text-white cursor-pointer"
+                  aria-label="Scroll left"
+                >
+                  <ChevronLeft className="h-5 w-5" />
+                </button>
+                <button
+                  onClick={() => scroll("right")}
+                  className="grid h-11 w-11 place-items-center rounded-full border border-navy-deep/15 bg-white text-navy-deep transition-all hover:bg-navy-deep hover:text-white cursor-pointer"
+                  aria-label="Scroll right"
+                >
+                  <ChevronRight className="h-5 w-5" />
+                </button>
+              </div>
+              <Link to="/case-studies" className="inline-flex items-center gap-2 rounded-full border border-navy-deep/15 bg-white px-5 py-3 text-sm font-semibold text-navy-deep hover:bg-navy-deep/5">
+                All case studies <ArrowRight className="h-4 w-4" />
+              </Link>
+            </div>
           </Reveal>
         </div>
       </div>
 
-      <div className="mt-12 overflow-x-auto pb-6 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+      <div ref={scrollRef} className="mt-12 overflow-x-auto pb-6 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         <div className="flex w-max gap-6 px-6 lg:px-[max(1.25rem,calc((100vw-80rem)/2+1.25rem))]">
           {cases.map((cs, i) => (
             <Reveal key={cs.c} delay={i * 0.06}>
@@ -727,7 +791,7 @@ export function Technologies() {
     { c: "AI", items: ["OpenAI", "Anthropic", "LangChain", "Zapier", "n8n", "Make"] },
   ];
   return (
-    <section className="bg-surface py-24 lg:py-32">
+    <section className="bg-surface py-16 lg:py-20">
       <div className="container-page">
         <div className="mx-auto max-w-2xl text-center">
           <Reveal>
@@ -768,7 +832,7 @@ export function Testimonials() {
     { name: "Vikram Iyer", role: "CEO, Meridian Realty", q: "Local SEO used to feel mysterious. Now it feels like a predictable pipeline. Best growth partner we've worked with." },
   ];
   return (
-    <section className="bg-white py-24 lg:py-32">
+    <section className="bg-white py-16 lg:py-20">
       <div className="container-page">
         <div className="grid items-end gap-6 lg:grid-cols-2">
           <Reveal>
@@ -826,7 +890,7 @@ export function Pricing() {
     { name: "Enterprise", p: "Custom", d: "For teams with complex stacks and goals.", f: ["Dedicated pod", "Custom SLAs", "ERP / CRM builds", "Executive dashboards"], cta: "Talk to sales", featured: false },
   ];
   return (
-    <section className="bg-surface py-24 lg:py-32">
+    <section className="bg-surface py-16 lg:py-20">
       <div className="container-page">
         <div className="mx-auto max-w-2xl text-center">
           <Reveal>
@@ -896,7 +960,7 @@ export function FAQ() {
   ];
   const [open, setOpen] = useState<number | null>(0);
   return (
-    <section className="bg-white py-24 lg:py-32">
+    <section className="bg-white py-16 lg:py-20">
       <div className="container-page">
         <div className="grid gap-12 lg:grid-cols-[1fr_1.4fr]">
           <Reveal>
@@ -950,7 +1014,7 @@ export function BlogPreview() {
     { t: "AI automations every 10-person team should ship", tag: "AI", d: "5 min read", c: "from-navy to-royal" },
   ];
   return (
-    <section className="bg-surface py-24 lg:py-32">
+    <section className="bg-surface py-16 lg:py-20">
       <div className="container-page">
         <div className="flex flex-col items-start justify-between gap-6 lg:flex-row lg:items-end">
           <Reveal>
@@ -994,7 +1058,7 @@ export function BlogPreview() {
 /* -------------------- CONTACT -------------------- */
 export function ContactSection() {
   return (
-    <section id="contact" className="bg-white py-24 lg:py-32">
+    <section id="contact" className="bg-white py-16 lg:py-20">
       <div className="container-page">
         <div className="overflow-hidden rounded-[2.5rem] border border-black/5 shadow-elegant">
           <div className="grid lg:grid-cols-2">
@@ -1035,10 +1099,10 @@ export function ContactSection() {
             <div className="relative overflow-hidden bg-surface p-10 sm:p-14">
               <div className="pointer-events-none absolute -right-24 -top-24 h-64 w-64 rounded-full bg-gold/20 blur-3xl" />
               <div className="relative space-y-6">
-                <ContactCard Icon={Phone} title="Call us" v="+91 00000 00000" />
-                <ContactCard Icon={MessageCircle} title="WhatsApp" v="Chat with growth expert" href="#" />
-                <ContactCard Icon={Mail} title="Email" v="hello@idmsmarttech.com" />
-                <ContactCard Icon={MapPin} title="Office" v="India · Remote worldwide" />
+                <ContactCard Icon={Phone} title="Call us" v="+91 8519837818" href="tel:+918519837818" />
+                <ContactCard Icon={MessageCircle} title="WhatsApp" v="+91 8519837818" href="https://wa.me/918519837818" />
+                <ContactCard Icon={Mail} title="Email" v="hello@idmsmarttech.com" href="mailto:hello@idmsmarttech.com" />
+                <ContactCard Icon={MapPin} title="Visit Us" v="First Floor, 23-98/A, beside Sri Sai Jyothsna Mess, Madhura Nagar, Shamshabad, Hyderabad, Telangana 501218" />
 
                 <div className="mt-2 aspect-[4/3] w-full overflow-hidden rounded-2xl border border-black/5 bg-navy-deep">
                   <div className="grid-lines h-full w-full opacity-60" />
@@ -1089,7 +1153,7 @@ function ContactCard({ Icon, title, v, href }: { Icon: React.ComponentType<{ cla
 /* -------------------- FINAL CTA -------------------- */
 export function FinalCTA() {
   return (
-    <section className="relative overflow-hidden bg-navy-deep py-24 text-white lg:py-32">
+    <section className="relative overflow-hidden bg-navy-deep py-16 text-white lg:py-20">
       <div className="pointer-events-none absolute inset-0 grid-lines opacity-40" />
       <div className="pointer-events-none absolute -left-32 top-1/2 h-96 w-96 -translate-y-1/2 rounded-full bg-royal/50 blur-3xl" />
       <div className="pointer-events-none absolute -right-32 top-1/2 h-96 w-96 -translate-y-1/2 rounded-full bg-gold/20 blur-3xl" />
@@ -1112,13 +1176,92 @@ export function FinalCTA() {
                 Book Free Consultation <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
               </Link>
               <a
-                href="#"
+                href="https://wa.me/918519837818"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-7 py-4 text-base font-semibold text-white backdrop-blur hover:bg-white/10"
               >
                 <MessageCircle className="h-4 w-4 text-gold" /> WhatsApp us
               </a>
             </div>
           </Reveal>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* -------------------- EXPERT TEAM -------------------- */
+export function ExpertTeam() {
+  const members = [
+    {
+      name: "Devendra Rawat",
+      role: "Founder & Chief Strategist",
+      bio: "12+ years building search engines and growth systems for high-growth tech brands.",
+      image: "/team_devendra.png",
+    },
+    {
+      name: "Rohini Sen",
+      role: "Head of Paid Media",
+      bio: "Ex-Google marketer managing over ₹50Cr in media spend with data-driven creative models.",
+      image: "/team_rohini.png",
+    },
+    {
+      name: "Amit Sharma",
+      role: "Lead Software Architect",
+      bio: "Builds high-performance ERP, CRM, and cloud systems that handle millions of operations.",
+      image: "/team_amit.png",
+    },
+    {
+      name: "Pooja Hegde",
+      role: "Lead UI/UX Designer",
+      bio: "Crafts conversion-optimized, premium digital experiences for Fortune 500 companies.",
+      image: "/team_pooja.png",
+    },
+  ];
+
+  return (
+    <section className="relative overflow-hidden bg-white py-16 lg:py-20">
+      <div className="pointer-events-none absolute inset-0 grid-lines opacity-20" aria-hidden />
+      <div className="container-page">
+        <div className="mx-auto max-w-2xl text-center">
+          <Reveal>
+            <SectionEyebrow>Expert Team</SectionEyebrow>
+            <h2 className="mt-5 font-display text-4xl font-bold text-navy-deep sm:text-5xl">
+              The Minds Behind Your Success
+            </h2>
+            <p className="mt-4 text-muted-foreground">
+              A handpicked collective of growth marketers, product designers, and AI engineers.
+            </p>
+          </Reveal>
+        </div>
+
+        <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          {members.map((m, i) => (
+            <Reveal key={m.name} delay={i * 0.05}>
+              <div className="group relative h-full rounded-[2rem] border border-black/5 bg-surface p-6 shadow-elegant transition-all duration-300 hover:-translate-y-2 hover:bg-white hover:shadow-premium">
+                <div className="relative mb-6 aspect-square w-full overflow-hidden rounded-2xl bg-gradient-to-br from-navy-deep to-royal">
+                  <img
+                    src={m.image}
+                    alt={m.name}
+                    className="h-full w-full object-cover grayscale transition-all duration-500 group-hover:grayscale-0 group-hover:scale-105"
+                  />
+                </div>
+                <h3 className="font-display text-xl font-bold text-navy-deep">{m.name}</h3>
+                <p className="mt-1 text-sm font-semibold text-royal">{m.role}</p>
+                <p className="mt-4 text-sm leading-relaxed text-muted-foreground">{m.bio}</p>
+                
+                <div className="mt-6 flex items-center gap-3 border-t border-black/5 pt-6 opacity-60 transition-opacity group-hover:opacity-100">
+                  <a href="#" aria-label="LinkedIn Profile" className="text-navy-deep hover:text-gold transition-colors">
+                    <Linkedin className="h-4 w-4" />
+                  </a>
+                  <a href="#" aria-label="Twitter Profile" className="text-navy-deep hover:text-gold transition-colors">
+                    <Twitter className="h-4 w-4" />
+                  </a>
+                </div>
+              </div>
+            </Reveal>
+          ))}
         </div>
       </div>
     </section>
