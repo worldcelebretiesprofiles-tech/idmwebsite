@@ -135,11 +135,15 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       <ScrollProgress />
+      <CustomCursor />
       <SiteNavbar />
       <main>
-        <Outlet />
+        <PageTransition>
+          <Outlet />
+        </PageTransition>
       </main>
       <SiteFooter />
+      <BackToTop />
     </QueryClientProvider>
   );
 }
