@@ -50,6 +50,7 @@ export function Hero() {
   return (
     <section ref={ref} className="relative isolate overflow-hidden bg-hero pb-24 pt-40 text-white lg:pb-40 lg:pt-48">
       <div className="pointer-events-none absolute inset-0 grid-lines opacity-60" aria-hidden />
+      <Spotlight />
       <motion.div style={{ y }} className="pointer-events-none absolute -left-32 top-24 h-[500px] w-[500px] rounded-full bg-royal/50 blur-3xl animate-float" aria-hidden />
       <motion.div style={{ y }} className="pointer-events-none absolute -right-24 top-40 h-[420px] w-[420px] rounded-full bg-gold/20 blur-3xl animate-float" aria-hidden />
 
