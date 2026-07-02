@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { motion, useScroll, useTransform } from "motion/react";
 import { useRef } from "react";
+import { Magnetic, Spotlight } from "./interactions";
 import {
   ArrowRight,
   ArrowUpRight,
