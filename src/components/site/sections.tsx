@@ -91,20 +91,25 @@ export function Hero() {
             transition={{ duration: 0.7, delay: 0.65 }}
             className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row"
           >
-            <Link
-              to="/contact"
-              className="group inline-flex items-center gap-2 rounded-full bg-gold px-7 py-4 text-base font-semibold text-navy-deep shadow-gold-glow transition-transform hover:-translate-y-0.5"
-            >
-              Get Free Consultation
-              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-            </Link>
-            <Link
-              to="/services"
-              className="group inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-7 py-4 text-base font-semibold text-white backdrop-blur transition-colors hover:bg-white/10"
-            >
-              View Our Services
-              <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-            </Link>
+            <Magnetic>
+              <Link
+                to="/contact"
+                className="group relative inline-flex items-center gap-2 overflow-hidden rounded-full bg-gold px-7 py-4 text-base font-semibold text-navy-deep shadow-gold-glow transition-transform hover:-translate-y-0.5"
+              >
+                <span className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/50 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
+                <span className="relative">Get Free Consultation</span>
+                <ArrowRight className="relative h-4 w-4 transition-transform group-hover:translate-x-1" />
+              </Link>
+            </Magnetic>
+            <Magnetic>
+              <Link
+                to="/services"
+                className="group inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-7 py-4 text-base font-semibold text-white backdrop-blur transition-colors hover:bg-white/10"
+              >
+                View Our Services
+                <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              </Link>
+            </Magnetic>
           </motion.div>
 
           {/* Trust badges */}
