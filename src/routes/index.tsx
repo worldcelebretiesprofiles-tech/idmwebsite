@@ -7,12 +7,9 @@ import {
   Services,
   WhyChooseUs,
   Process,
-  Portfolio,
-  CaseStudies,
   Technologies,
   Testimonials,
   ExpertTeam,
-  Pricing,
   FAQ,
   ContactSection,
   FinalCTA,
@@ -32,12 +29,9 @@ function Home() {
       <Services />
       <WhyChooseUs />
       <Process />
-      <Portfolio />
-      <CaseStudies />
       <Technologies />
       <Testimonials />
       <ExpertTeam />
-      <Pricing />
       <FAQ />
       <ContactSection />
       <FinalCTA />

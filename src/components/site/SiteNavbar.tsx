@@ -74,8 +74,6 @@ const NAV: { label: string; href: string; hasMega?: boolean }[] = [
   { label: "Home", href: "/" },
   { label: "About", href: "/about" },
   { label: "Services", href: "/services", hasMega: true },
-  { label: "Portfolio", href: "/portfolio" },
-  { label: "Case Studies", href: "/case-studies" },
   { label: "Blog", href: "/blog" },
   { label: "Contact", href: "/contact" },
 ];
@@ -150,52 +148,30 @@ export function SiteNavbar() {
                           transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
                           onMouseEnter={() => setMegaOpen(true)}
                           onMouseLeave={() => setMegaOpen(false)}
-                          className="absolute left-[-120px] top-full mt-3 hidden w-[620px] overflow-hidden rounded-[2rem] border border-black/5 bg-white shadow-premium lg:flex z-50"
+                          className="absolute left-1/2 -translate-x-1/2 top-full mt-3 hidden w-[880px] overflow-hidden rounded-[2rem] border border-black/5 bg-white p-8 shadow-premium lg:block z-50"
                         >
-                          {/* Left Pane (Categories) */}
-                          <div className="w-[260px] bg-white p-6 border-r border-black/5 flex flex-col gap-2">
-                            {SERVICES_CATEGORIES.map((cat) => {
-                              const isActive = activeCategory === cat.title;
-                              return (
-                                <button
-                                  key={cat.title}
-                                  onMouseEnter={() => setActiveCategory(cat.title)}
-                                  className={`flex items-center justify-between rounded-xl px-4 py-3 text-left text-sm font-semibold transition-all duration-200 ${
-                                    isActive
-                                      ? "bg-royal/5 text-royal"
-                                      : "text-ink hover:bg-black/5 hover:text-navy-deep"
-                                  }`}
-                                >
-                                  <span>{cat.title}</span>
-                                  {cat.hasChevron && (
-                                    <ChevronDown
-                                      className={`h-4 w-4 transition-transform duration-200 ${
-                                        isActive ? "text-royal rotate-180" : "text-muted-foreground"
-                                      }`}
-                                    />
-                                  )}
-                                </button>
-                              );
-                            })}
-                          </div>
-
-                          {/* Right Pane (Active Category Items) */}
-                          <div className="flex-1 bg-white p-6 min-h-[380px] flex flex-col justify-between">
-                            <div className="space-y-1">
-                              {SERVICES_CATEGORIES.find((c) => c.title === activeCategory)?.items.map((it) => (
-                                <Link
-                                  key={it.label}
-                                  to={it.href}
-                                  onClick={() => setMegaOpen(false)}
-                                  className="block rounded-xl px-4 py-2.5 text-sm font-medium text-ink transition-colors hover:bg-gold-soft/50 hover:text-navy-deep"
-                                >
-                                  {it.label}
-                                </Link>
-                              ))}
-                            </div>
-
-                            {/* Subtle Footer Callout */}
-                            <div className="mt-4 border-t border-black/5 pt-4 flex items-center justify-between text-xs">
+                          <div className="grid grid-cols-4 gap-6">
+                            {SERVICES_CATEGORIES.map((cat) => (
+                              <div key={cat.title} className="space-y-4">
+                                <h4 className="font-display text-xs font-bold uppercase tracking-wider text-royal border-b border-black/5 pb-2">
+                                  {cat.title}
+                                </h4>
+                                <div className="flex flex-col gap-2">
+                                  {cat.items.map((it) => (
+                                    <Link
+                                      key={it.label}
+                                      to={it.href}
+                                      onClick={() => setMegaOpen(false)}
+                                      className="text-xs font-medium text-ink hover:text-royal transition-colors"
+                                    >
+                                      {it.label}
+                                    </Link>
+                                  ))}
+                                </div>
+                              </div>
+                            ))}
+                            
+                            <div className="col-span-4 mt-4 border-t border-black/5 pt-4 flex items-center justify-between text-xs">
                               <span className="text-muted-foreground">Looking for custom solutions?</span>
                               <Link
                                 to="/contact"

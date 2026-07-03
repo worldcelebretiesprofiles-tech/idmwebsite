@@ -117,6 +117,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   errorComponent: ErrorComponent,
 });
 
+import { Phone, MessageCircle } from "lucide-react";
+
 function RootShell({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
@@ -128,6 +130,31 @@ function RootShell({ children }: { children: ReactNode }) {
         <Scripts />
       </body>
     </html>
+  );
+}
+
+function FloatingContact() {
+  return (
+    <div className="fixed bottom-6 left-6 z-40 flex flex-col gap-3">
+      {/* WhatsApp Button */}
+      <a
+        href="https://wa.me/918519837818"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="group flex h-12 w-12 items-center justify-center rounded-full bg-[#25D366] text-white shadow-lg transition-all duration-300 hover:scale-110 hover:shadow-[#25D366]/30 hover:shadow-xl cursor-pointer"
+        aria-label="Chat on WhatsApp"
+      >
+        <MessageCircle className="h-6 w-6 transition-transform group-hover:rotate-6" />
+      </a>
+      {/* Phone Button */}
+      <a
+        href="tel:+918519837818"
+        className="group flex h-12 w-12 items-center justify-center rounded-full bg-navy-deep text-gold shadow-lg border border-gold/20 transition-all duration-300 hover:scale-110 hover:shadow-gold-glow hover:shadow-xl cursor-pointer"
+        aria-label="Call Us"
+      >
+        <Phone className="h-5 w-5 transition-transform group-hover:rotate-6" />
+      </a>
+    </div>
   );
 }
 
@@ -146,6 +173,7 @@ function RootComponent() {
       </main>
       <SiteFooter />
       <BackToTop />
+      <FloatingContact />
     </QueryClientProvider>
   );
 }

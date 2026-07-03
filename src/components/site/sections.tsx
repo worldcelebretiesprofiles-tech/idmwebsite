@@ -316,12 +316,12 @@ export function Industries() {
         <div className="mt-14 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
           {items.map((it, i) => (
             <Reveal key={it.n} delay={i * 0.04}>
-              <div className="group relative overflow-hidden rounded-2xl border border-black/5 bg-white p-5 shadow-elegant transition-all hover:-translate-y-1 hover:shadow-premium">
+              <div className="group relative overflow-hidden rounded-2xl border border-white/10 bg-navy-deep p-5 shadow-elegant transition-all hover:-translate-y-1 hover:shadow-premium">
                 <div className="absolute inset-x-0 top-0 h-1 origin-left scale-x-0 bg-gold-gradient transition-transform duration-500 group-hover:scale-x-100" />
-                <div className="mb-3 grid h-11 w-11 place-items-center rounded-xl bg-navy-deep/5 text-navy-deep transition-colors group-hover:bg-gold group-hover:text-navy-deep">
+                <div className="mb-3 grid h-11 w-11 place-items-center rounded-xl bg-white/10 text-gold transition-colors group-hover:bg-gold group-hover:text-navy-deep">
                   <it.Icon className="h-5 w-5" />
                 </div>
-                <p className="font-display text-base font-semibold text-navy-deep">{it.n}</p>
+                <p className="font-display text-base font-semibold text-white group-hover:text-gold transition-colors">{it.n}</p>
               </div>
             </Reveal>
           ))}
