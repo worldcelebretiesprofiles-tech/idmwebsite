@@ -38,10 +38,11 @@ import {
   Headphones,
   Linkedin,
   Twitter,
+  Instagram,
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Reveal, Counter, SectionEyebrow } from "./motion-primitives";
 
 /* -------------------- HERO -------------------- */
@@ -96,14 +97,14 @@ export function Hero() {
             className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row"
           >
             <Magnetic>
-              <Link
-                to="/contact"
-                className="group relative inline-flex items-center gap-2 overflow-hidden rounded-full bg-gold px-7 py-4 text-base font-semibold text-navy-deep shadow-gold-glow transition-transform hover:-translate-y-0.5"
+              <button
+                onClick={() => window.dispatchEvent(new CustomEvent("open-consultation-modal"))}
+                className="group relative inline-flex items-center gap-2 overflow-hidden rounded-full bg-gold px-7 py-4 text-base font-semibold text-navy-deep shadow-gold-glow transition-transform hover:-translate-y-0.5 cursor-pointer"
               >
                 <span className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/50 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
                 <span className="relative">Get Free Consultation</span>
                 <ArrowRight className="relative h-4 w-4 transition-transform group-hover:translate-x-1" />
-              </Link>
+              </button>
             </Magnetic>
             <Magnetic>
               <Link
@@ -447,8 +448,34 @@ export function WhyChooseUs() {
     offset: ["start start", "end end"],
   });
 
+  const [activeDot, setActiveDot] = useState(0);
+
+  useEffect(() => {
+    const unsubscribe = scrollYProgress.on("change", (latest) => {
+      let activeIdx = 0;
+      for (let i = 0; i < items.length; i++) {
+        const start = 0.05 + i * 0.15;
+        if (latest >= start - 0.05) {
+          activeIdx = i;
+        }
+      }
+      setActiveDot(activeIdx);
+    });
+    return () => unsubscribe();
+  }, [scrollYProgress, items.length]);
+
+  const handleDotClick = (i: number) => {
+    const container = containerRef.current;
+    if (!container) return;
+    const rect = container.getBoundingClientRect();
+    const scrollProgress = 0.05 + i * 0.15;
+    const scrollableHeight = container.clientHeight - window.innerHeight;
+    const targetScrollY = window.scrollY + rect.top + (scrollProgress * scrollableHeight);
+    window.scrollTo({ top: targetScrollY, behavior: "smooth" });
+  };
+
   return (
-    <section ref={containerRef} className="relative bg-white" style={{ height: "900vh" }}>
+    <section ref={containerRef} className="relative bg-white" style={{ height: "500vh" }}>
       <div className="sticky top-0 flex h-screen w-full flex-col justify-start overflow-hidden pt-20">
         <div className="container-page">
           <div className="mx-auto max-w-2xl text-center">
@@ -466,6 +493,32 @@ export function WhyChooseUs() {
           {items.map((it, i) => (
             <StackedCard key={it.t} index={i} total={items.length} item={it} progress={scrollYProgress} />
           ))}
+
+          {/* Side Progress Dots (Desktop only) */}
+          <div className="absolute right-[-80px] top-1/2 -translate-y-1/2 hidden flex-col items-center gap-6 lg:flex z-30">
+            <div className="relative w-0.5 h-48 bg-navy-deep/10 rounded-full">
+              {/* Animated fill line */}
+              <div
+                className="absolute top-0 left-0 w-full bg-[#25D366] rounded-full origin-top transition-all duration-300"
+                style={{ height: `${(activeDot / (items.length - 1)) * 100}%` }}
+              />
+              {/* Dots */}
+              <div className="absolute inset-x-0 top-0 flex flex-col justify-between items-center h-full">
+                {items.map((_, i) => (
+                  <button
+                    key={i}
+                    onClick={() => handleDotClick(i)}
+                    className={`h-3 w-3 rounded-full border-2 transition-all duration-300 -translate-x-[5.5px] cursor-pointer ${
+                      activeDot === i
+                        ? "bg-[#25D366] border-[#25D366] scale-125 shadow-[0_0_10px_rgba(37,211,102,0.4)]"
+                        : "bg-white border-navy-deep/30 hover:border-navy-deep/60"
+                    }`}
+                    aria-label={`Go to card ${i + 1}`}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -931,14 +984,14 @@ export function Pricing() {
                     </li>
                   ))}
                 </ul>
-                <Link
-                  to="/contact"
-                  className={`mt-8 inline-flex items-center justify-center gap-2 rounded-full px-5 py-3 text-sm font-semibold transition-transform hover:-translate-y-0.5 ${
+                <button
+                  onClick={() => window.dispatchEvent(new CustomEvent("open-consultation-modal"))}
+                  className={`mt-8 inline-flex items-center justify-center gap-2 rounded-full px-5 py-3 text-sm font-semibold transition-transform hover:-translate-y-0.5 cursor-pointer ${
                     pl.featured ? "bg-gold text-navy-deep" : "bg-navy-deep text-white"
                   }`}
                 >
                   {pl.cta} <ArrowRight className="h-4 w-4" />
-                </Link>
+                </button>
               </div>
             </Reveal>
           ))}
@@ -969,7 +1022,7 @@ export function FAQ() {
               Answers to what most teams ask us.
             </h2>
             <p className="mt-4 text-muted-foreground">
-              Can't find yours? <Link to="/contact" className="font-semibold text-navy-deep underline decoration-gold decoration-2 underline-offset-4">Get in touch</Link>.
+              Can't find yours? <button onClick={() => window.dispatchEvent(new CustomEvent("open-consultation-modal"))} className="font-semibold text-navy-deep underline decoration-gold decoration-2 underline-offset-4 cursor-pointer bg-transparent border-0 p-0">Get in touch</button>.
             </p>
           </Reveal>
           <div>
@@ -1104,8 +1157,15 @@ export function ContactSection() {
                 <ContactCard Icon={Mail} title="Email" v="hello@idmsmarttech.com" href="mailto:hello@idmsmarttech.com" />
                 <ContactCard Icon={MapPin} title="Visit Us" v="First Floor, 23-98/A, beside Sri Sai Jyothsna Mess, Madhura Nagar, Shamshabad, Hyderabad, Telangana 501218" />
 
-                <div className="mt-2 aspect-[4/3] w-full overflow-hidden rounded-2xl border border-black/5 bg-navy-deep">
-                  <div className="grid-lines h-full w-full opacity-60" />
+                <div className="mt-2 aspect-[4/3] w-full overflow-hidden rounded-2xl border border-black/5 bg-navy-deep relative">
+                  <iframe
+                    title="IDM Smart Tech Location Map"
+                    src="https://maps.google.com/maps?q=IDM%20Smart%20Tech%20-%20Google%20My%20Business%20Expert%20,%20Local%20SEO%20Expert%20in%20Hyderabad&t=&z=16&ie=UTF8&iwloc=&output=embed"
+                    className="absolute inset-0 h-full w-full border-0"
+                    allowFullScreen
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                  />
                 </div>
 
                 <p className="text-xs text-muted-foreground">
@@ -1192,31 +1252,258 @@ export function FinalCTA() {
 }
 
 /* -------------------- EXPERT TEAM -------------------- */
+function TeamCard({ member, index }: { member: any; index: number }) {
+  const cardRef = useRef<HTMLDivElement>(null);
+  const [reflectX, setReflectX] = useState(0);
+  const [reflectY, setReflectY] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
+  const [isFlipped, setIsFlipped] = useState(false);
+
+  // Auto-flip loop on touch-only mobile/tablet devices
+  useEffect(() => {
+    const isTouchDevice = window.matchMedia("(hover: none)").matches;
+    if (!isTouchDevice) return;
+
+    // Stagger start delay based on index to prevent simultaneous flipping
+    const startDelay = index * 1500;
+    const delayTimeout = setTimeout(() => {
+      // Initial flip
+      setIsFlipped(true);
+      setIsHovered(true);
+
+      // Periodically flip back and forth every 4 seconds
+      const interval = setInterval(() => {
+        setIsFlipped((prev) => {
+          const next = !prev;
+          setIsHovered(next);
+          return next;
+        });
+      }, 4000);
+
+      return () => clearInterval(interval);
+    }, startDelay);
+
+    return () => clearTimeout(delayTimeout);
+  }, [index]);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!cardRef.current) return;
+    const isTouchDevice = window.matchMedia("(hover: none)").matches;
+    if (isTouchDevice) return; // Disable on touch devices
+
+    const card = cardRef.current;
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    setReflectX(x);
+    setReflectY(y);
+  };
+
+  const handleMouseEnter = () => {
+    const isTouchDevice = window.matchMedia("(hover: none)").matches;
+    if (!isTouchDevice) {
+      setIsHovered(true);
+      setIsFlipped(true);
+    }
+  };
+
+  const handleMouseLeave = () => {
+    const isTouchDevice = window.matchMedia("(hover: none)").matches;
+    if (!isTouchDevice) {
+      setIsHovered(false);
+      setIsFlipped(false);
+    }
+  };
+
+  const handleCardClick = () => {
+    const isTouchDevice = window.matchMedia("(hover: none)").matches;
+    if (isTouchDevice) {
+      setIsFlipped((prev) => !prev);
+      setIsHovered((prev) => !prev);
+    }
+  };
+
+  const isImageWithBlackBars = member.image.toLowerCase().includes("sravan") || member.image.toLowerCase().includes("triveni");
+  const baseScale = isImageWithBlackBars ? 1.24 : 1.00;
+  const hoverScale = isImageWithBlackBars ? 1.30 : 1.05;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 30, scale: 0.95 }}
+      whileInView={{ opacity: 1, y: 0, scale: 1 }}
+      viewport={{ once: true, margin: "-50px" }}
+      transition={{ duration: 0.5, ease: "easeOut", delay: index * 0.12 }}
+      className="h-[390px] w-full select-none"
+      style={{ perspective: "1200px" }}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      onClick={handleCardClick}
+      onMouseMove={handleMouseMove}
+    >
+      <div
+        ref={cardRef}
+        style={{
+          transformStyle: "preserve-3d",
+          transform: isFlipped ? "rotateY(180deg) translateY(-8px)" : "rotateY(0deg) translateY(0px)",
+          boxShadow: isHovered
+            ? "0 20px 40px -10px rgba(37, 211, 102, 0.12), 0 25px 45px -12px rgba(0, 0, 0, 0.45)"
+            : "0 10px 30px -12px rgba(10, 35, 90, 0.15), 0 4px 12px -5px rgba(0, 0, 0, 0.1)",
+          transition: "transform 650ms ease-in-out, box-shadow 650ms ease-in-out",
+          willChange: "transform",
+        }}
+        className="group relative h-full w-full rounded-[24px] p-[1.5px] bg-gradient-to-br from-white/10 to-white/5 hover:from-[#25D366] hover:via-royal hover:to-[#25D366] hover:bg-[length:200%_200%] hover:animate-border-glow cursor-pointer"
+      >
+        {/* FRONT FACE */}
+        <div
+          style={{
+            backfaceVisibility: "hidden",
+            WebkitBackfaceVisibility: "hidden",
+            transformStyle: "preserve-3d",
+            transform: "translateZ(0px)",
+          }}
+          className="absolute inset-[1px] bg-navy-deep/80 backdrop-blur-md rounded-[23px] p-6 flex flex-col items-center justify-center border border-white/5 overflow-hidden"
+        >
+          {/* Full Card Image Background with Parallax */}
+          <img
+            src={member.image}
+            alt={member.name}
+            style={{
+              transform: isHovered 
+                ? `translateZ(30px) scale(${hoverScale})` 
+                : `translateZ(0px) scale(${baseScale})`,
+              transition: "transform 650ms ease-in-out",
+              objectPosition: isImageWithBlackBars ? "center 30%" : "center",
+            }}
+            className="absolute inset-0 h-full w-full object-cover transition-transform duration-300 ease-out will-change-transform z-0"
+          />
+          
+          {/* Dark Overlay for Text Contrast */}
+          <div className="absolute inset-0 bg-gradient-to-t from-navy-deep via-navy-deep/20 to-transparent z-10" />
+
+          {/* Shine/Light Sweep on Front */}
+          <div className="pointer-events-none absolute inset-0 z-20 overflow-hidden">
+            <div
+              className="absolute top-0 h-full w-[200%] -skew-x-12 bg-gradient-to-r from-transparent via-white/15 to-transparent opacity-0 group-hover:opacity-100"
+              style={{
+                left: isHovered ? "100%" : "-150%",
+                transition: isHovered ? "left 800ms ease-in-out, opacity 400ms ease" : "left 0s, opacity 0.2s",
+              }}
+            />
+          </div>
+
+          {/* Info positioned at the bottom with Parallax */}
+          <div
+            style={{
+              transform: isHovered ? "translateZ(45px)" : "translateZ(0px)",
+              transition: "transform 650ms ease-in-out",
+            }}
+            className="absolute bottom-6 left-6 right-6 text-left z-20"
+          >
+            <h3 className="font-display text-lg font-bold text-white group-hover:text-[#25D366] transition-colors duration-450 ease-out">
+              {member.name}
+            </h3>
+            
+            <p className="mt-1 text-xs font-semibold uppercase tracking-widest text-[#FFD400]">
+              {member.role}
+            </p>
+          </div>
+        </div>
+
+        {/* BACK FACE */}
+        <div
+          style={{
+            backfaceVisibility: "hidden",
+            WebkitBackfaceVisibility: "hidden",
+            transform: "rotateY(180deg) translateZ(1px)",
+            transformStyle: "preserve-3d",
+          }}
+          className="absolute inset-[1px] bg-navy-deep/95 backdrop-blur-md rounded-[23px] p-6 flex flex-col items-center justify-between border border-[#25D366]/20 overflow-hidden"
+        >
+          {/* Back Content - Slides up and fades in as flip finishes */}
+          <div className="flex-1 flex flex-col items-center justify-center relative z-10">
+            <h4
+              style={{
+                transform: isHovered ? "translateZ(25px)" : "translateZ(0px)",
+                transition: "transform 650ms ease-in-out",
+              }}
+              className="font-display text-md font-bold text-[#25D366] mb-3"
+            >
+              {member.name}
+            </h4>
+            
+            <p
+              style={{
+                transform: isHovered ? "translateZ(15px)" : "translateZ(0px)",
+                transition: "transform 650ms ease-in-out",
+              }}
+              className="text-xs leading-relaxed text-white/90 max-w-[240px] text-center opacity-30 group-hover:opacity-100 transition-opacity duration-450 ease-out delay-[200ms]"
+            >
+              {member.bio}
+            </p>
+          </div>
+
+          {/* Social Icons on the Back - Staggered Slide up */}
+          <div
+            style={{
+              transform: isHovered ? "translateZ(30px)" : "translateZ(0px)",
+              transition: "transform 650ms ease-in-out",
+            }}
+            className="flex items-center justify-center gap-4 border-t border-white/10 pt-5 w-full relative z-10"
+          >
+            <a
+              href="#"
+              aria-label="LinkedIn"
+              className="translate-y-4 opacity-0 transition-all duration-450 ease-out delay-[350ms] group-hover:translate-y-0 group-hover:opacity-100 hover:scale-110 hover:text-[#25D366] text-white/60 cursor-pointer"
+            >
+              <Linkedin className="h-4 w-4" />
+            </a>
+            <a
+              href="#"
+              aria-label="Instagram"
+              className="translate-y-4 opacity-0 transition-all duration-450 ease-out delay-[400ms] group-hover:translate-y-0 group-hover:opacity-100 hover:scale-110 hover:text-[#25D366] text-white/60 cursor-pointer"
+            >
+              <Instagram className="h-4 w-4" />
+            </a>
+            <a
+              href="mailto:hello@idmsmarttech.com"
+              aria-label="Email"
+              className="translate-y-4 opacity-0 transition-all duration-450 ease-out delay-[450ms] group-hover:translate-y-0 group-hover:opacity-100 hover:scale-110 hover:text-[#25D366] text-white/60 cursor-pointer"
+            >
+              <Mail className="h-4 w-4" />
+            </a>
+          </div>
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
 export function ExpertTeam() {
   const members = [
     {
-      name: "Devendra Rawat",
-      role: "Founder & Chief Strategist",
-      bio: "12+ years building search engines and growth systems for high-growth tech brands.",
-      image: "/team_devendra.png",
+      name: "Pradeep Goud",
+      role: "Professional Video Editor",
+      bio: "Transforms raw footage into engaging, high-quality videos that capture attention, strengthen your brand, and increase audience engagement.",
+      image: "/team_pradeep_goud.PNG",
     },
     {
-      name: "Rohini Sen",
-      role: "Head of Paid Media",
-      bio: "Ex-Google marketer managing over ₹50Cr in media spend with data-driven creative models.",
-      image: "/team_rohini.png",
+      name: "G. Sravani",
+      role: "Local SEO Expert",
+      bio: "Helps businesses rank higher on Google Maps and local search results, driving more calls, website visits, and local customers.",
+      image: "/team_g_sravani.jpeg",
     },
     {
-      name: "Amit Sharma",
-      role: "Lead Software Architect",
-      bio: "Builds high-performance ERP, CRM, and cloud systems that handle millions of operations.",
-      image: "/team_amit.png",
+      name: "Triveni",
+      role: "SEO Executive",
+      bio: "Optimizes your website with effective on-page and technical SEO strategies to improve search rankings, increase traffic, and generate leads.",
+      image: "/team_triveni.jpeg",
     },
     {
-      name: "Pooja Hegde",
-      role: "Lead UI/UX Designer",
-      bio: "Crafts conversion-optimized, premium digital experiences for Fortune 500 companies.",
-      image: "/team_pooja.png",
+      name: "R. Rahul",
+      role: "Content Creator",
+      bio: "Creates compelling content that builds brand authority, connects with your audience, and drives engagement across web and social media.",
+      image: "/team_r_rahul.PNG",
     },
   ];
 
@@ -1238,29 +1525,7 @@ export function ExpertTeam() {
 
         <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {members.map((m, i) => (
-            <Reveal key={m.name} delay={i * 0.05}>
-              <div className="group relative h-full rounded-[2rem] border border-black/5 bg-surface p-6 shadow-elegant transition-all duration-300 hover:-translate-y-2 hover:bg-white hover:shadow-premium">
-                <div className="relative mb-6 aspect-square w-full overflow-hidden rounded-2xl bg-gradient-to-br from-navy-deep to-royal">
-                  <img
-                    src={m.image}
-                    alt={m.name}
-                    className="h-full w-full object-cover grayscale transition-all duration-500 group-hover:grayscale-0 group-hover:scale-105"
-                  />
-                </div>
-                <h3 className="font-display text-xl font-bold text-navy-deep">{m.name}</h3>
-                <p className="mt-1 text-sm font-semibold text-royal">{m.role}</p>
-                <p className="mt-4 text-sm leading-relaxed text-muted-foreground">{m.bio}</p>
-                
-                <div className="mt-6 flex items-center gap-3 border-t border-black/5 pt-6 opacity-60 transition-opacity group-hover:opacity-100">
-                  <a href="#" aria-label="LinkedIn Profile" className="text-navy-deep hover:text-gold transition-colors">
-                    <Linkedin className="h-4 w-4" />
-                  </a>
-                  <a href="#" aria-label="Twitter Profile" className="text-navy-deep hover:text-gold transition-colors">
-                    <Twitter className="h-4 w-4" />
-                  </a>
-                </div>
-              </div>
-            </Reveal>
+            <TeamCard key={m.name} member={m} index={i} />
           ))}
         </div>
       </div>

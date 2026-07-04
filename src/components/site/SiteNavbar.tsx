@@ -17,6 +17,7 @@ import {
   ArrowRight,
 } from "lucide-react";
 import { BrandMark } from "./BrandMark";
+import { ConsultationModal } from "./ConsultationModal";
 
 const SERVICES_CATEGORIES = [
   {
@@ -173,13 +174,15 @@ export function SiteNavbar() {
                             
                             <div className="col-span-4 mt-4 border-t border-black/5 pt-4 flex items-center justify-between text-xs">
                               <span className="text-muted-foreground">Looking for custom solutions?</span>
-                              <Link
-                                to="/contact"
-                                onClick={() => setMegaOpen(false)}
-                                className="font-bold text-royal hover:underline flex items-center gap-0.5"
+                              <button
+                                onClick={() => {
+                                  setMegaOpen(false);
+                                  window.dispatchEvent(new CustomEvent("open-consultation-modal"));
+                                }}
+                                className="font-bold text-royal hover:underline flex items-center gap-0.5 bg-transparent border-0 cursor-pointer"
                               >
                                 Talk to our experts <ArrowRight className="h-3 w-3" />
-                              </Link>
+                              </button>
                             </div>
                           </div>
                         </motion.div>
@@ -207,12 +210,12 @@ export function SiteNavbar() {
             </nav>
 
             <div className="flex items-center gap-2">
-              <Link
-                to="/contact"
-                className="hidden rounded-full bg-gold px-5 py-2.5 text-sm font-semibold text-navy-deep shadow-gold-glow transition-transform hover:-translate-y-0.5 md:inline-flex"
+              <button
+                onClick={() => window.dispatchEvent(new CustomEvent("open-consultation-modal"))}
+                className="hidden rounded-full bg-gold px-5 py-2.5 text-sm font-semibold text-navy-deep shadow-gold-glow transition-transform hover:-translate-y-0.5 md:inline-flex cursor-pointer"
               >
                 Get Free Consultation
-              </Link>
+              </button>
               <button
                 aria-label="Open menu"
                 onClick={() => setMobileOpen(true)}
@@ -280,19 +283,22 @@ export function SiteNavbar() {
                   <p className="mt-1 font-display text-lg font-semibold">
                     Let's build your success.
                   </p>
-                  <Link
-                    to="/contact"
-                    onClick={() => setMobileOpen(false)}
-                    className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-full bg-gold px-4 py-3 text-sm font-semibold text-navy-deep"
+                  <button
+                    onClick={() => {
+                      setMobileOpen(false);
+                      window.dispatchEvent(new CustomEvent("open-consultation-modal"));
+                    }}
+                    className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-full bg-gold px-4 py-3 text-sm font-semibold text-navy-deep cursor-pointer"
                   >
                     Get Free Consultation <ArrowRight className="h-4 w-4" />
-                  </Link>
+                  </button>
                 </div>
               </div>
             </motion.aside>
           </>
         )}
       </AnimatePresence>
+      <ConsultationModal />
     </header>
   );
 }

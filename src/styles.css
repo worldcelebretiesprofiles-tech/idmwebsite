@@ -243,3 +243,21 @@ html.has-custom-cursor * {
     scroll-behavior: auto !important;
   }
 }
+
+@keyframes float-micro {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+@utility animate-float-micro {
+  animation: float-micro 3s ease-in-out infinite;
+}
+
+@keyframes border-glow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+@utility animate-border-glow {
+  background-size: 200% 200%;
+  animation: border-glow 4s ease infinite;
+}

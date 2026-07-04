@@ -27,11 +27,11 @@ function Home() {
       <About />
       <Industries />
       <Services />
+      <ExpertTeam />
       <WhyChooseUs />
       <Process />
       <Technologies />
       <Testimonials />
-      <ExpertTeam />
       <FAQ />
       <ContactSection />
       <FinalCTA />
