@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Reveal, SectionEyebrow } from "@/components/site/motion-primitives";
+import { ExpertTeam } from "@/components/site/sections";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
@@ -89,6 +90,7 @@ function AboutPage() {
           </div>
         </div>
       </section>
+      <ExpertTeam />
     </>
   );
 }

@@ -9,7 +9,6 @@ import {
   Process,
   Technologies,
   Testimonials,
-  ExpertTeam,
   FAQ,
   ContactSection,
   FinalCTA,
@@ -27,7 +26,6 @@ function Home() {
       <About />
       <Industries />
       <Services />
-      <ExpertTeam />
       <WhyChooseUs />
       <Process />
       <Technologies />
