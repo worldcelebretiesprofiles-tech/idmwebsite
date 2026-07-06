@@ -141,10 +141,10 @@ function FloatingContact() {
         href="https://wa.me/918519837818"
         target="_blank"
         rel="noopener noreferrer"
-        className="group flex h-16 w-16 items-center justify-center rounded-full bg-[#25D366] text-white shadow-lg transition-all duration-300 hover:scale-110 hover:shadow-[#25D366]/30 hover:shadow-xl cursor-pointer"
+        className="group flex h-16 w-16 items-center justify-center rounded-full shadow-lg transition-all duration-300 hover:scale-110 hover:shadow-[#25D366]/30 hover:shadow-xl cursor-pointer overflow-hidden"
         aria-label="Chat on WhatsApp"
       >
-        <MessageCircle className="h-8 w-8 transition-transform group-hover:rotate-6" />
+        <img src="/whatsapp.png" alt="WhatsApp" className="h-full w-full object-cover transition-transform group-hover:rotate-6" />
       </a>
       {/* Phone Button */}
       <a
