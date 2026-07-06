@@ -1506,7 +1506,7 @@ function TeamCard({ member, index }: { member: any; index: number }) {
 export function ExpertTeam() {
   const members = [
     {
-      name: "Dhanalaksmi",
+      name: "Dhanalakshmi",
       role: "Social Media Expert",
       bio: "Crafts engaging social media strategies that build brand presence, connect with audiences, and drive organic growth across platforms.",
       image: "/team_Dhanalaxmi .png",
@@ -1527,7 +1527,7 @@ export function ExpertTeam() {
       name: "Lekha",
       role: "Supportive Executive",
       bio: "Leads comprehensive SEO campaigns, analyzes performance data, and implements advanced strategies to maximize search visibility and organic traffic.",
-      image: "/team_lekha.png",
+      image: "/team_lekha.jpeg",
     },
     {
       name: "R. Rahul",
