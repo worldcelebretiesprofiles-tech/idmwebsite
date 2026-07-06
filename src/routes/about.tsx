@@ -79,7 +79,10 @@ function AboutPage() {
                 </div>
                 <div className="p-8 text-left">
                   <h3 className="font-display text-2xl font-bold text-navy-deep">Bantaram Sanvika</h3>
-                  <p className="mt-1 text-sm font-semibold uppercase tracking-widest text-gold">Founder</p>
+                  <p className="mt-1 text-sm font-semibold uppercase tracking-widest text-gold">GMB SEO Specialist</p>
+                  <p className="mt-4 text-sm text-muted-foreground leading-relaxed">
+                    With 7+ years of experience, I have helped 10,000+ business owners improve their Google Business Profiles, generate organic leads, and increase revenue through proven Local SEO strategies.
+                  </p>
                 </div>
               </div>
             </Reveal>

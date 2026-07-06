@@ -135,24 +135,24 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function FloatingContact() {
   return (
-    <div className="fixed bottom-6 left-6 z-40 flex flex-col gap-3">
+    <div className="fixed top-1/2 right-6 z-40 -translate-y-1/2 flex flex-col gap-4">
       {/* WhatsApp Button */}
       <a
         href="https://wa.me/918519837818"
         target="_blank"
         rel="noopener noreferrer"
-        className="group flex h-12 w-12 items-center justify-center rounded-full bg-[#25D366] text-white shadow-lg transition-all duration-300 hover:scale-110 hover:shadow-[#25D366]/30 hover:shadow-xl cursor-pointer"
+        className="group flex h-16 w-16 items-center justify-center rounded-full bg-[#25D366] text-white shadow-lg transition-all duration-300 hover:scale-110 hover:shadow-[#25D366]/30 hover:shadow-xl cursor-pointer"
         aria-label="Chat on WhatsApp"
       >
-        <MessageCircle className="h-6 w-6 transition-transform group-hover:rotate-6" />
+        <MessageCircle className="h-8 w-8 transition-transform group-hover:rotate-6" />
       </a>
       {/* Phone Button */}
       <a
         href="tel:+918519837818"
-        className="group flex h-12 w-12 items-center justify-center rounded-full bg-navy-deep text-gold shadow-lg border border-gold/20 transition-all duration-300 hover:scale-110 hover:shadow-gold-glow hover:shadow-xl cursor-pointer"
+        className="group flex h-16 w-16 items-center justify-center rounded-full bg-navy-deep text-gold shadow-lg border border-gold/20 transition-all duration-300 hover:scale-110 hover:shadow-gold-glow hover:shadow-xl cursor-pointer"
         aria-label="Call Us"
       >
-        <Phone className="h-5 w-5 transition-transform group-hover:rotate-6" />
+        <Phone className="h-7 w-7 transition-transform group-hover:rotate-6" />
       </a>
     </div>
   );

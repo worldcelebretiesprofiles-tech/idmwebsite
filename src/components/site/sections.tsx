@@ -838,10 +838,11 @@ export function CaseStudies() {
 export function Technologies() {
   const cats = [
     { c: "Marketing", items: ["Google Ads", "Meta Ads", "GA4", "Search Console", "Ahrefs", "SEMrush", "HubSpot", "Mailchimp"] },
+    { c: "GMB Tools", items: ["GMB Everywhere", "Right Choice.Ai", "Localo", "GMB Plug", "GMB Crush", "Semrush", "Google keyword Planner"] },
     { c: "Development", items: ["Next.js", "React", "Node", "TypeScript", "Laravel", "WordPress", "Shopify", "Tailwind"] },
     { c: "Cloud", items: ["AWS", "GCP", "Vercel", "Cloudflare", "Supabase", "Firebase"] },
     { c: "Analytics", items: ["GA4", "Mixpanel", "Hotjar", "Looker", "Metabase"] },
-    { c: "AI", items: ["OpenAI", "Anthropic", "LangChain", "Zapier", "n8n", "Make"] },
+    { c: "AI", items: ["OpenAI", "Claude", "Gemini", "Chatgpt", "Perplexity", "Gamma.Ai", "Notebook.LLM"] },
   ];
   return (
     <section className="bg-surface py-16 lg:py-20">
@@ -1207,7 +1208,7 @@ export function ContactSection() {
               <div className="relative space-y-6">
                 <ContactCard Icon={Phone} title="Call us" v="+91 8519837818" href="tel:+918519837818" />
                 <ContactCard Icon={MessageCircle} title="WhatsApp" v="+91 8519837818" href="https://wa.me/918519837818" />
-                <ContactCard Icon={Mail} title="Email" v="hello@idmsmarttech.com" href="mailto:hello@idmsmarttech.com" />
+                <ContactCard Icon={Mail} title="Email" v="info@idmsmarttech.com" href="mailto:info@idmsmarttech.com" />
                 <ContactCard Icon={MapPin} title="Visit Us" v="First Floor, 23-98/A, beside Sri Sai Jyothsna Mess, Madhura Nagar, Shamshabad, Hyderabad, Telangana 501218" />
 
                 <div className="mt-2 aspect-[4/3] w-full overflow-hidden rounded-2xl border border-black/5 bg-navy-deep relative">
@@ -1222,7 +1223,7 @@ export function ContactSection() {
                 </div>
 
                 <p className="text-xs text-muted-foreground">
-                  We reply within 4 business hours. Prefer async? Drop us a Loom at hello@idmsmarttech.com.
+                  We reply within 4 business hours. Prefer async? Drop us a Loom at info@idmsmarttech.com.
                 </p>
               </div>
             </div>
@@ -1496,36 +1497,6 @@ function TeamCard({ member, index }: { member: any; index: number }) {
             </p>
           </div>
 
-          {/* Social Icons on the Back - Staggered Slide up */}
-          <div
-            style={{
-              transform: isHovered ? "translateZ(30px)" : "translateZ(0px)",
-              transition: "transform 650ms ease-in-out",
-            }}
-            className="flex items-center justify-center gap-4 border-t border-white/10 pt-5 w-full relative z-10"
-          >
-            <a
-              href="#"
-              aria-label="LinkedIn"
-              className="translate-y-4 opacity-0 transition-all duration-450 ease-out delay-[350ms] group-hover:translate-y-0 group-hover:opacity-100 hover:scale-110 hover:text-[#25D366] text-white/60 cursor-pointer"
-            >
-              <Linkedin className="h-4 w-4" />
-            </a>
-            <a
-              href="#"
-              aria-label="Instagram"
-              className="translate-y-4 opacity-0 transition-all duration-450 ease-out delay-[400ms] group-hover:translate-y-0 group-hover:opacity-100 hover:scale-110 hover:text-[#25D366] text-white/60 cursor-pointer"
-            >
-              <Instagram className="h-4 w-4" />
-            </a>
-            <a
-              href="mailto:hello@idmsmarttech.com"
-              aria-label="Email"
-              className="translate-y-4 opacity-0 transition-all duration-450 ease-out delay-[450ms] group-hover:translate-y-0 group-hover:opacity-100 hover:scale-110 hover:text-[#25D366] text-white/60 cursor-pointer"
-            >
-              <Mail className="h-4 w-4" />
-            </a>
-          </div>
         </div>
       </div>
     </motion.div>
@@ -1535,10 +1506,10 @@ function TeamCard({ member, index }: { member: any; index: number }) {
 export function ExpertTeam() {
   const members = [
     {
-      name: "Pradeep Goud",
-      role: "Professional Video Editor",
-      bio: "Transforms raw footage into engaging, high-quality videos that capture attention, strengthen your brand, and increase audience engagement.",
-      image: "/team_pradeep_goud.PNG",
+      name: "Dhanalaksmi",
+      role: "Social Media Expert",
+      bio: "Crafts engaging social media strategies that build brand presence, connect with audiences, and drive organic growth across platforms.",
+      image: "/team_Dhanalaxmi .png",
     },
     {
       name: "G. Sravani",
@@ -1553,22 +1524,22 @@ export function ExpertTeam() {
       image: "/team_triveni.jpeg",
     },
     {
+      name: "Lekha",
+      role: "Supportive Executive",
+      bio: "Leads comprehensive SEO campaigns, analyzes performance data, and implements advanced strategies to maximize search visibility and organic traffic.",
+      image: "/team_lekha.png",
+    },
+    {
       name: "R. Rahul",
       role: "Content Creator",
       bio: "Creates compelling content that builds brand authority, connects with your audience, and drives engagement across web and social media.",
       image: "/team_r_rahul.PNG",
     },
     {
-      name: "Dhanalaksmi",
-      role: "Social Media Expert",
-      bio: "Crafts engaging social media strategies that build brand presence, connect with audiences, and drive organic growth across platforms.",
-      image: "/team_Dhanalaxmi .png",
-    },
-    {
-      name: "Lekha",
-      role: "SEO Manager",
-      bio: "Leads comprehensive SEO campaigns, analyzes performance data, and implements advanced strategies to maximize search visibility and organic traffic.",
-      image: "/team_lekha.png",
+      name: "Pradeep Goud",
+      role: "Professional Video Editor",
+      bio: "Transforms raw footage into engaging, high-quality videos that capture attention, strengthen your brand, and increase audience engagement.",
+      image: "/team_pradeep_goud.PNG",
     },
     {
       name: "Anand",
