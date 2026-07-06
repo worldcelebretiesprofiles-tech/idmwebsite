@@ -54,6 +54,38 @@ function AboutPage() {
           </Reveal>
         </div>
       </section>
+      <section className="bg-surface py-24 lg:py-32">
+        <div className="container-page text-center">
+          <Reveal>
+            <SectionEyebrow>Leadership</SectionEyebrow>
+            <h2 className="mt-5 font-display text-4xl font-bold text-navy-deep sm:text-5xl">Meet Our Founders</h2>
+          </Reveal>
+          <div className="mt-16 grid gap-8 sm:grid-cols-2 max-w-4xl mx-auto">
+            <Reveal delay={0.1}>
+              <div className="overflow-hidden rounded-3xl bg-white shadow-elegant transition-transform hover:-translate-y-2 border border-black/5">
+                <div className="aspect-[4/5] w-full overflow-hidden">
+                  <img src="/raghavendra_goud_founder.jpeg" alt="Raghavendra Goud" className="h-full w-full object-cover object-top" />
+                </div>
+                <div className="p-8 text-left">
+                  <h3 className="font-display text-2xl font-bold text-navy-deep">Raghavendra Goud</h3>
+                  <p className="mt-1 text-sm font-semibold uppercase tracking-widest text-gold">Founder</p>
+                </div>
+              </div>
+            </Reveal>
+            <Reveal delay={0.2}>
+              <div className="overflow-hidden rounded-3xl bg-white shadow-elegant transition-transform hover:-translate-y-2 border border-black/5">
+                <div className="aspect-[4/5] w-full overflow-hidden">
+                  <img src="/BantaramSanvika_founder.png" alt="Bantaram Sanvika" className="h-full w-full object-cover object-top" />
+                </div>
+                <div className="p-8 text-left">
+                  <h3 className="font-display text-2xl font-bold text-navy-deep">Bantaram Sanvika</h3>
+                  <p className="mt-1 text-sm font-semibold uppercase tracking-widest text-gold">Founder</p>
+                </div>
+              </div>
+            </Reveal>
+          </div>
+        </div>
+      </section>
     </>
   );
 }

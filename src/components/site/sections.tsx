@@ -1110,6 +1110,34 @@ export function BlogPreview() {
 
 /* -------------------- CONTACT -------------------- */
 export function ContactSection() {
+  const [name, setName] = useState("");
+  const [company, setCompany] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [details, setDetails] = useState("");
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!name || !phone) {
+      alert("Please fill in your name and phone number.");
+      return;
+    }
+
+    const message = `🚀 *New Consultation Request* 🚀\n\n👤 *Name:* ${name}\n🏢 *Company:* ${company || "Not Specified"}\n📧 *Email:* ${email || "Not Specified"}\n📞 *Phone:* ${phone}\n📝 *Project Details:* ${details || "Not Specified"}`;
+    const encodedMessage = encodeURIComponent(message);
+    const whatsappUrl = `https://wa.me/918519837818?text=${encodedMessage}`;
+
+    window.open(whatsappUrl, "_blank");
+
+    // Clear form
+    setName("");
+    setCompany("");
+    setEmail("");
+    setPhone("");
+    setDetails("");
+  };
+
   return (
     <section id="contact" className="bg-white py-16 lg:py-20">
       <div className="container-page">
@@ -1124,24 +1152,49 @@ export function ContactSection() {
                 Book a free consultation. We'll review your funnel and share a growth plan — no fluff, no pitch decks.
               </p>
 
-              <form className="mt-8 space-y-4">
+              <form onSubmit={handleSubmit} className="mt-8 space-y-4">
                 <div className="grid gap-4 sm:grid-cols-2">
-                  <FormInput label="Full name" placeholder="Priya Sharma" />
-                  <FormInput label="Company" placeholder="Acme Inc." />
+                  <FormInput
+                    label="Full name *"
+                    placeholder="Priya Sharma"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    required
+                  />
+                  <FormInput
+                    label="Company"
+                    placeholder="Acme Inc."
+                    value={company}
+                    onChange={(e) => setCompany(e.target.value)}
+                  />
                 </div>
-                <FormInput label="Work email" placeholder="you@company.com" type="email" />
-                <FormInput label="Phone / WhatsApp" placeholder="+91 00000 00000" />
+                <FormInput
+                  label="Work email"
+                  placeholder="you@company.com"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+                <FormInput
+                  label="Phone / WhatsApp *"
+                  placeholder="+91 00000 00000"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  required
+                />
                 <div>
                   <label className="mb-1.5 block text-xs font-semibold uppercase tracking-widest text-gold">Tell us about your project</label>
                   <textarea
                     rows={4}
                     placeholder="Goals, timeline, budget…"
-                    className="w-full rounded-2xl border border-white/15 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-white/40 focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/30"
+                    value={details}
+                    onChange={(e) => setDetails(e.target.value)}
+                    className="w-full rounded-2xl border border-white/15 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-white/40 focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/30 resize-none"
                   />
                 </div>
                 <button
                   type="submit"
-                  className="group inline-flex w-full items-center justify-center gap-2 rounded-full bg-gold px-6 py-4 text-base font-semibold text-navy-deep shadow-gold-glow transition-transform hover:-translate-y-0.5"
+                  className="group inline-flex w-full items-center justify-center gap-2 rounded-full bg-gold px-6 py-4 text-base font-semibold text-navy-deep shadow-gold-glow transition-transform hover:-translate-y-0.5 cursor-pointer"
                 >
                   Book Free Consultation
                   <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
@@ -1229,12 +1282,12 @@ export function FinalCTA() {
               A 30-minute call with a senior strategist. Walk away with a plan — even if we don't work together.
             </p>
             <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
-              <Link
-                to="/contact"
-                className="group inline-flex items-center gap-2 rounded-full bg-gold px-7 py-4 text-base font-semibold text-navy-deep shadow-gold-glow transition-transform hover:-translate-y-0.5"
+              <button
+                onClick={() => window.dispatchEvent(new CustomEvent("open-consultation-modal"))}
+                className="group inline-flex items-center gap-2 rounded-full bg-gold px-7 py-4 text-base font-semibold text-navy-deep shadow-gold-glow transition-transform hover:-translate-y-0.5 cursor-pointer"
               >
                 Book Free Consultation <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-              </Link>
+              </button>
               <a
                 href="https://wa.me/918519837818"
                 target="_blank"
@@ -1504,6 +1557,24 @@ export function ExpertTeam() {
       role: "Content Creator",
       bio: "Creates compelling content that builds brand authority, connects with your audience, and drives engagement across web and social media.",
       image: "/team_r_rahul.PNG",
+    },
+    {
+      name: "Dhanalaksmi",
+      role: "Social Media Expert",
+      bio: "Crafts engaging social media strategies that build brand presence, connect with audiences, and drive organic growth across platforms.",
+      image: "/team_Dhanalaxmi .png",
+    },
+    {
+      name: "Lekha",
+      role: "SEO Manager",
+      bio: "Leads comprehensive SEO campaigns, analyzes performance data, and implements advanced strategies to maximize search visibility and organic traffic.",
+      image: "/team_lekha.png",
+    },
+    {
+      name: "Anand",
+      role: "SEO Expert",
+      bio: "Specializes in technical SEO, keyword research, and on-page optimization to ensure websites rank prominently for high-converting search terms.",
+      image: "/team_anand.png",
     },
   ];
 
