@@ -187,19 +187,51 @@ function WordReveal({ text }: { text: string }) {
 
 /* -------------------- TRUSTED CLIENTS -------------------- */
 export function TrustedClients() {
-  const logos = ["Aureon", "Nordlys", "Meridian", "Solstice", "Kintaro", "Vantage", "Halcyon", "Zenith", "Larkspur", "Bramble"];
-  const row = [...logos, ...logos];
+  const logos = [
+    "Vmobi tec", "Neo skin care", "PX Makes", "GSA projects", "Jai bheam Advocate Lawyer",
+    "SV Techno", "Sneha groups", "Life style", "Cake Xpress", "Atharva farm stay",
+    "AS Home appliences", "Vihari Travells", "Tre Eye Detective Agency", "Whisper vintage",
+    "AIM software technology", "Dhruva Electricals", "7hills Tattoz", "Walki Talki",
+    "Apna car travells", "Tanvi mobiles", "Prasad cell care", "Euro kids",
+    "Krishna sai dental", "Pavan apple dental care", "True eye detective agency (vijayawada)",
+    "Raju gari biryani", "Cash counting machine", "NASA Valley", "Sri venkateswara Infra developers",
+    "Explore 360", "SVK groups", "Global Desk", "Victory Heights", "JLM Shopping mall",
+    "power ready mix concrete", "Arjun Raj", "SV Soil Save Farmer", "SS Computer Institute",
+    "VASUNDHANA Fertility and speciality hospital", "GMB", "Viva HOSPITAL",
+    "SL HOSPITAL SIMPLIFY LIFE", "LAVENDER BEAUTY MAKEUP STUDIO", "JANAM PALLI ANIRUDH REDDY",
+    "SSK SANGET WORLD", "SRI SAI WESTERN WEAR", "MONTRA ELECTRIC", "KAMAKSHI EV MOTORS",
+    "HMB HAPPY MARRIAGE BUREAU", "ASUS SERVICE CENTER", "ISHA PRINTS", "UNPKFC",
+    "WORLD HUMAN RIGHT COUNCIL"
+  ];
+  
+  const half = Math.ceil(logos.length / 2);
+  const logos1 = logos.slice(0, half);
+  const logos2 = logos.slice(half);
+
+  const row1 = [...logos1, ...logos1];
+  const row2 = [...logos2, ...logos2];
+
   return (
     <section className="border-y border-black/5 bg-white py-10">
-      <div className="container-page">
+      <div className="container-page overflow-hidden">
         <p className="text-center text-xs font-semibold uppercase tracking-[0.25em] text-muted-foreground">
           Trusted by ambitious teams worldwide
         </p>
-        <div className="relative mt-6 overflow-hidden [mask-image:linear-gradient(90deg,transparent,black_10%,black_90%,transparent)]">
+        <div className="relative mt-8 flex flex-col gap-6 overflow-hidden [mask-image:linear-gradient(90deg,transparent,black_10%,black_90%,transparent)]">
           <div className="flex w-max animate-marquee gap-14">
-            {row.map((name, i) => (
+            {row1.map((name, i) => (
               <span
                 key={i}
+                className="font-display text-2xl font-bold tracking-tight text-navy-deep/40 transition-colors hover:text-navy-deep"
+              >
+                {name}
+              </span>
+            ))}
+          </div>
+          <div className="flex w-max animate-marquee-reverse gap-14">
+            {row2.map((name, i) => (
+              <span
+                key={`row2-${i}`}
                 className="font-display text-2xl font-bold tracking-tight text-navy-deep/40 transition-colors hover:text-navy-deep"
               >
                 {name}
@@ -340,48 +372,56 @@ export function Services() {
       t: "SEO & Local SEO",
       d: "Rank for the queries that drive real revenue. Technical, on-page, and local.",
       tags: ["SEO", "Local SEO", "GBP"],
+      link: "/services/search-engine-optimization",
     },
     {
       Icon: BarChart3,
       t: "Google & Meta Ads",
       d: "Full-funnel paid media that scales spend without wasting a rupee.",
       tags: ["Google Ads", "Meta Ads", "YouTube"],
+      link: "/services",
     },
     {
       Icon: Globe,
       t: "Web Design & Development",
       d: "Fast, beautiful, conversion-focused sites — WordPress, Shopify, or custom.",
       tags: ["Business", "Ecommerce", "Landing"],
+      link: "/services",
     },
     {
       Icon: Smartphone,
       t: "Mobile App Development",
       d: "iOS, Android, Flutter and React Native apps users actually love.",
       tags: ["iOS", "Android", "Flutter"],
+      link: "/services",
     },
     {
       Icon: Code2,
       t: "Software · CRM · ERP",
       d: "Custom software, CRM, ERP, and industry systems built to fit your ops.",
       tags: ["CRM", "ERP", "Custom"],
+      link: "/services",
     },
     {
       Icon: Sparkles,
       t: "AI & Automation",
       d: "Chatbots, WhatsApp flows, workflow and CRM automations powered by AI.",
       tags: ["AI", "Automation", "WhatsApp"],
+      link: "/services",
     },
     {
       Icon: Palette,
       t: "Branding & Creative",
       d: "Logos, brand systems, social creatives, video, and motion graphics.",
       tags: ["Brand", "Video", "Design"],
+      link: "/services",
     },
     {
       Icon: MapPin,
       t: "Google Business Profile",
       d: "Rank on Maps, own the local pack, and turn searches into store visits.",
       tags: ["GBP", "Maps", "Reviews"],
+      link: "/services",
     },
   ];
 
@@ -419,7 +459,7 @@ export function Services() {
                     </span>
                   ))}
                 </div>
-                <Link to="/services" className="mt-6 inline-flex items-center gap-1 text-sm font-semibold text-navy-deep">
+                <Link to={s.link} className="mt-6 inline-flex items-center gap-1 text-sm font-semibold text-navy-deep">
                   Learn more <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                 </Link>
               </div>

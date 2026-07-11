@@ -16,6 +16,16 @@ import { Route as CaseStudiesRouteImport } from './routes/case-studies'
 import { Route as BlogRouteImport } from './routes/blog'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ServicesIndexRouteImport } from './routes/services.index'
+import { Route as ServicesSocialMediaMarketingRouteImport } from './routes/services.social-media-marketing'
+import { Route as ServicesSocialMediaManagementRouteImport } from './routes/services.social-media-management'
+import { Route as ServicesSearchEngineOptimizationRouteImport } from './routes/services.search-engine-optimization'
+import { Route as ServicesLocalSeoRouteImport } from './routes/services.local-seo'
+import { Route as ServicesLeadGenerationRouteImport } from './routes/services.lead-generation'
+import { Route as ServicesGoogleAdsRouteImport } from './routes/services.google-ads'
+import { Route as ServicesEmailMarketingRouteImport } from './routes/services.email-marketing'
+import { Route as ServicesContentMarketingRouteImport } from './routes/services.content-marketing'
+import { Route as ServicesAiSeoRouteImport } from './routes/services.ai-seo'
 
 const ServicesRoute = ServicesRouteImport.update({
   id: '/services',
@@ -52,6 +62,60 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ServicesIndexRoute = ServicesIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => ServicesRoute,
+} as any)
+const ServicesSocialMediaMarketingRoute =
+  ServicesSocialMediaMarketingRouteImport.update({
+    id: '/social-media-marketing',
+    path: '/social-media-marketing',
+    getParentRoute: () => ServicesRoute,
+  } as any)
+const ServicesSocialMediaManagementRoute =
+  ServicesSocialMediaManagementRouteImport.update({
+    id: '/social-media-management',
+    path: '/social-media-management',
+    getParentRoute: () => ServicesRoute,
+  } as any)
+const ServicesSearchEngineOptimizationRoute =
+  ServicesSearchEngineOptimizationRouteImport.update({
+    id: '/search-engine-optimization',
+    path: '/search-engine-optimization',
+    getParentRoute: () => ServicesRoute,
+  } as any)
+const ServicesLocalSeoRoute = ServicesLocalSeoRouteImport.update({
+  id: '/local-seo',
+  path: '/local-seo',
+  getParentRoute: () => ServicesRoute,
+} as any)
+const ServicesLeadGenerationRoute = ServicesLeadGenerationRouteImport.update({
+  id: '/lead-generation',
+  path: '/lead-generation',
+  getParentRoute: () => ServicesRoute,
+} as any)
+const ServicesGoogleAdsRoute = ServicesGoogleAdsRouteImport.update({
+  id: '/google-ads',
+  path: '/google-ads',
+  getParentRoute: () => ServicesRoute,
+} as any)
+const ServicesEmailMarketingRoute = ServicesEmailMarketingRouteImport.update({
+  id: '/email-marketing',
+  path: '/email-marketing',
+  getParentRoute: () => ServicesRoute,
+} as any)
+const ServicesContentMarketingRoute =
+  ServicesContentMarketingRouteImport.update({
+    id: '/content-marketing',
+    path: '/content-marketing',
+    getParentRoute: () => ServicesRoute,
+  } as any)
+const ServicesAiSeoRoute = ServicesAiSeoRouteImport.update({
+  id: '/ai-seo',
+  path: '/ai-seo',
+  getParentRoute: () => ServicesRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -60,7 +124,17 @@ export interface FileRoutesByFullPath {
   '/case-studies': typeof CaseStudiesRoute
   '/contact': typeof ContactRoute
   '/portfolio': typeof PortfolioRoute
-  '/services': typeof ServicesRoute
+  '/services': typeof ServicesRouteWithChildren
+  '/services/ai-seo': typeof ServicesAiSeoRoute
+  '/services/content-marketing': typeof ServicesContentMarketingRoute
+  '/services/email-marketing': typeof ServicesEmailMarketingRoute
+  '/services/google-ads': typeof ServicesGoogleAdsRoute
+  '/services/lead-generation': typeof ServicesLeadGenerationRoute
+  '/services/local-seo': typeof ServicesLocalSeoRoute
+  '/services/search-engine-optimization': typeof ServicesSearchEngineOptimizationRoute
+  '/services/social-media-management': typeof ServicesSocialMediaManagementRoute
+  '/services/social-media-marketing': typeof ServicesSocialMediaMarketingRoute
+  '/services/': typeof ServicesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -69,7 +143,16 @@ export interface FileRoutesByTo {
   '/case-studies': typeof CaseStudiesRoute
   '/contact': typeof ContactRoute
   '/portfolio': typeof PortfolioRoute
-  '/services': typeof ServicesRoute
+  '/services/ai-seo': typeof ServicesAiSeoRoute
+  '/services/content-marketing': typeof ServicesContentMarketingRoute
+  '/services/email-marketing': typeof ServicesEmailMarketingRoute
+  '/services/google-ads': typeof ServicesGoogleAdsRoute
+  '/services/lead-generation': typeof ServicesLeadGenerationRoute
+  '/services/local-seo': typeof ServicesLocalSeoRoute
+  '/services/search-engine-optimization': typeof ServicesSearchEngineOptimizationRoute
+  '/services/social-media-management': typeof ServicesSocialMediaManagementRoute
+  '/services/social-media-marketing': typeof ServicesSocialMediaMarketingRoute
+  '/services': typeof ServicesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -79,7 +162,17 @@ export interface FileRoutesById {
   '/case-studies': typeof CaseStudiesRoute
   '/contact': typeof ContactRoute
   '/portfolio': typeof PortfolioRoute
-  '/services': typeof ServicesRoute
+  '/services': typeof ServicesRouteWithChildren
+  '/services/ai-seo': typeof ServicesAiSeoRoute
+  '/services/content-marketing': typeof ServicesContentMarketingRoute
+  '/services/email-marketing': typeof ServicesEmailMarketingRoute
+  '/services/google-ads': typeof ServicesGoogleAdsRoute
+  '/services/lead-generation': typeof ServicesLeadGenerationRoute
+  '/services/local-seo': typeof ServicesLocalSeoRoute
+  '/services/search-engine-optimization': typeof ServicesSearchEngineOptimizationRoute
+  '/services/social-media-management': typeof ServicesSocialMediaManagementRoute
+  '/services/social-media-marketing': typeof ServicesSocialMediaMarketingRoute
+  '/services/': typeof ServicesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -91,6 +184,16 @@ export interface FileRouteTypes {
     | '/contact'
     | '/portfolio'
     | '/services'
+    | '/services/ai-seo'
+    | '/services/content-marketing'
+    | '/services/email-marketing'
+    | '/services/google-ads'
+    | '/services/lead-generation'
+    | '/services/local-seo'
+    | '/services/search-engine-optimization'
+    | '/services/social-media-management'
+    | '/services/social-media-marketing'
+    | '/services/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -99,6 +202,15 @@ export interface FileRouteTypes {
     | '/case-studies'
     | '/contact'
     | '/portfolio'
+    | '/services/ai-seo'
+    | '/services/content-marketing'
+    | '/services/email-marketing'
+    | '/services/google-ads'
+    | '/services/lead-generation'
+    | '/services/local-seo'
+    | '/services/search-engine-optimization'
+    | '/services/social-media-management'
+    | '/services/social-media-marketing'
     | '/services'
   id:
     | '__root__'
@@ -109,6 +221,16 @@ export interface FileRouteTypes {
     | '/contact'
     | '/portfolio'
     | '/services'
+    | '/services/ai-seo'
+    | '/services/content-marketing'
+    | '/services/email-marketing'
+    | '/services/google-ads'
+    | '/services/lead-generation'
+    | '/services/local-seo'
+    | '/services/search-engine-optimization'
+    | '/services/social-media-management'
+    | '/services/social-media-marketing'
+    | '/services/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -118,7 +240,7 @@ export interface RootRouteChildren {
   CaseStudiesRoute: typeof CaseStudiesRoute
   ContactRoute: typeof ContactRoute
   PortfolioRoute: typeof PortfolioRoute
-  ServicesRoute: typeof ServicesRoute
+  ServicesRoute: typeof ServicesRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -172,8 +294,108 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/services/': {
+      id: '/services/'
+      path: '/'
+      fullPath: '/services/'
+      preLoaderRoute: typeof ServicesIndexRouteImport
+      parentRoute: typeof ServicesRoute
+    }
+    '/services/social-media-marketing': {
+      id: '/services/social-media-marketing'
+      path: '/social-media-marketing'
+      fullPath: '/services/social-media-marketing'
+      preLoaderRoute: typeof ServicesSocialMediaMarketingRouteImport
+      parentRoute: typeof ServicesRoute
+    }
+    '/services/social-media-management': {
+      id: '/services/social-media-management'
+      path: '/social-media-management'
+      fullPath: '/services/social-media-management'
+      preLoaderRoute: typeof ServicesSocialMediaManagementRouteImport
+      parentRoute: typeof ServicesRoute
+    }
+    '/services/search-engine-optimization': {
+      id: '/services/search-engine-optimization'
+      path: '/search-engine-optimization'
+      fullPath: '/services/search-engine-optimization'
+      preLoaderRoute: typeof ServicesSearchEngineOptimizationRouteImport
+      parentRoute: typeof ServicesRoute
+    }
+    '/services/local-seo': {
+      id: '/services/local-seo'
+      path: '/local-seo'
+      fullPath: '/services/local-seo'
+      preLoaderRoute: typeof ServicesLocalSeoRouteImport
+      parentRoute: typeof ServicesRoute
+    }
+    '/services/lead-generation': {
+      id: '/services/lead-generation'
+      path: '/lead-generation'
+      fullPath: '/services/lead-generation'
+      preLoaderRoute: typeof ServicesLeadGenerationRouteImport
+      parentRoute: typeof ServicesRoute
+    }
+    '/services/google-ads': {
+      id: '/services/google-ads'
+      path: '/google-ads'
+      fullPath: '/services/google-ads'
+      preLoaderRoute: typeof ServicesGoogleAdsRouteImport
+      parentRoute: typeof ServicesRoute
+    }
+    '/services/email-marketing': {
+      id: '/services/email-marketing'
+      path: '/email-marketing'
+      fullPath: '/services/email-marketing'
+      preLoaderRoute: typeof ServicesEmailMarketingRouteImport
+      parentRoute: typeof ServicesRoute
+    }
+    '/services/content-marketing': {
+      id: '/services/content-marketing'
+      path: '/content-marketing'
+      fullPath: '/services/content-marketing'
+      preLoaderRoute: typeof ServicesContentMarketingRouteImport
+      parentRoute: typeof ServicesRoute
+    }
+    '/services/ai-seo': {
+      id: '/services/ai-seo'
+      path: '/ai-seo'
+      fullPath: '/services/ai-seo'
+      preLoaderRoute: typeof ServicesAiSeoRouteImport
+      parentRoute: typeof ServicesRoute
+    }
   }
 }
+
+interface ServicesRouteChildren {
+  ServicesAiSeoRoute: typeof ServicesAiSeoRoute
+  ServicesContentMarketingRoute: typeof ServicesContentMarketingRoute
+  ServicesEmailMarketingRoute: typeof ServicesEmailMarketingRoute
+  ServicesGoogleAdsRoute: typeof ServicesGoogleAdsRoute
+  ServicesLeadGenerationRoute: typeof ServicesLeadGenerationRoute
+  ServicesLocalSeoRoute: typeof ServicesLocalSeoRoute
+  ServicesSearchEngineOptimizationRoute: typeof ServicesSearchEngineOptimizationRoute
+  ServicesSocialMediaManagementRoute: typeof ServicesSocialMediaManagementRoute
+  ServicesSocialMediaMarketingRoute: typeof ServicesSocialMediaMarketingRoute
+  ServicesIndexRoute: typeof ServicesIndexRoute
+}
+
+const ServicesRouteChildren: ServicesRouteChildren = {
+  ServicesAiSeoRoute: ServicesAiSeoRoute,
+  ServicesContentMarketingRoute: ServicesContentMarketingRoute,
+  ServicesEmailMarketingRoute: ServicesEmailMarketingRoute,
+  ServicesGoogleAdsRoute: ServicesGoogleAdsRoute,
+  ServicesLeadGenerationRoute: ServicesLeadGenerationRoute,
+  ServicesLocalSeoRoute: ServicesLocalSeoRoute,
+  ServicesSearchEngineOptimizationRoute: ServicesSearchEngineOptimizationRoute,
+  ServicesSocialMediaManagementRoute: ServicesSocialMediaManagementRoute,
+  ServicesSocialMediaMarketingRoute: ServicesSocialMediaMarketingRoute,
+  ServicesIndexRoute: ServicesIndexRoute,
+}
+
+const ServicesRouteWithChildren = ServicesRoute._addFileChildren(
+  ServicesRouteChildren,
+)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
@@ -182,7 +404,7 @@ const rootRouteChildren: RootRouteChildren = {
   CaseStudiesRoute: CaseStudiesRoute,
   ContactRoute: ContactRoute,
   PortfolioRoute: PortfolioRoute,
-  ServicesRoute: ServicesRoute,
+  ServicesRoute: ServicesRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
