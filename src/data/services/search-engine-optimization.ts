@@ -4,7 +4,7 @@ import {
 } from "lucide-react";
 import { ServiceData } from "./types";
 
-export const searchEngineOptimizationData: ServiceData = {
+export const seoServiceData: ServiceData = {
   slug: "search-engine-optimization",
   seo: {
     title: "Search Engine Optimization (SEO) Services | IDM Smart Tech",
