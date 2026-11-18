@@ -2,6 +2,8 @@ import "./lib/error-capture";
 
 import { consumeLastCapturedError } from "./lib/error-capture";
 import { renderErrorPage } from "./lib/error-page";
+import { handleApiWebhook } from "./api/webhook";
+import { handleApiWebhookWhatsapp } from "./api/webhook-whatsapp";
 
 type ServerEntry = {
   fetch: (request: Request, env: unknown, ctx: unknown) => Promise<Response> | Response;
@@ -46,6 +48,17 @@ function isH3SwallowedErrorBody(body: string): boolean {
 
 export default {
   async fetch(request: Request, env: unknown, ctx: unknown) {
+    const url = new URL(request.url);
+
+    // ── Intercept API routes before TanStack Router ──────────────────────────
+    if (url.pathname === "/api/webhook/whatsapp" || url.pathname === "/api/webhook/whatsapp/") {
+      return handleApiWebhookWhatsapp(request);
+    }
+    if (url.pathname === "/api/webhook" || url.pathname === "/api/webhook/") {
+      return handleApiWebhook(request);
+    }
+
+    // ── All other requests → TanStack Router SSR ─────────────────────────────
     try {
       const handler = await getServerEntry();
       const response = await handler.fetch(request, env, ctx);
