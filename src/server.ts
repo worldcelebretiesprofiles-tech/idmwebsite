@@ -62,13 +62,12 @@ async function handleWhatsappWebhook(request: Request): Promise<Response> {
       headers: { "Content-Type": "application/json", ...WEBHOOK_CORS },
     });
 
-  if (method === "OPTIONS")
-    return new Response(null, { status: 204, headers: WEBHOOK_CORS });
+  if (method === "OPTIONS") return new Response(null, { status: 204, headers: WEBHOOK_CORS });
 
   if (method === "GET") {
     const url = new URL(request.url);
-    const mode      = url.searchParams.get("hub.mode");
-    const token     = url.searchParams.get("hub.verify_token");
+    const mode = url.searchParams.get("hub.mode");
+    const token = url.searchParams.get("hub.verify_token");
     const challenge = url.searchParams.get("hub.challenge");
     if (mode === "subscribe" && token === WA_VERIFY_TOKEN) {
       console.log("[IDM WA] ✅ Webhook verified");
@@ -106,8 +105,7 @@ async function handleLeadWebhook(request: Request): Promise<Response> {
       headers: { "Content-Type": "application/json", ...WEBHOOK_CORS },
     });
 
-  if (method === "OPTIONS")
-    return new Response(null, { status: 204, headers: WEBHOOK_CORS });
+  if (method === "OPTIONS") return new Response(null, { status: 204, headers: WEBHOOK_CORS });
 
   if (method === "GET") {
     return json({
@@ -115,7 +113,14 @@ async function handleLeadWebhook(request: Request): Promise<Response> {
       endpoint: "/api/webhook",
       method: "POST",
       description: "IDM Smart Tech lead callback. POST JSON with lead data.",
-      fields: { name: "required", phone: "required", email: "optional", company: "optional", message: "optional", source: "optional" },
+      fields: {
+        name: "required",
+        phone: "required",
+        email: "optional",
+        company: "optional",
+        message: "optional",
+        source: "optional",
+      },
     });
   }
 
@@ -127,21 +132,25 @@ async function handleLeadWebhook(request: Request): Promise<Response> {
         data = (await request.json()) as Record<string, unknown>;
       } else {
         const text = await request.text();
-        try { data = JSON.parse(text) as Record<string, unknown>; } catch { data = { raw: text }; }
+        try {
+          data = JSON.parse(text) as Record<string, unknown>;
+        } catch {
+          data = { raw: text };
+        }
       }
 
-      const name    = String(data.name    ?? data.full_name    ?? "Not Provided");
-      const phone   = String(data.phone   ?? data.mobile       ?? data.whatsapp ?? "Not Provided");
-      const email   = String(data.email   ?? "Not Provided");
-      const company = String(data.company ?? data.business     ?? "Not Provided");
-      const message = String(data.message ?? data.details      ?? "Not Provided");
-      const source  = String(data.source  ?? data.utm_source   ?? "Webhook");
-      const ts      = new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" });
+      const name = String(data.name ?? data.full_name ?? "Not Provided");
+      const phone = String(data.phone ?? data.mobile ?? data.whatsapp ?? "Not Provided");
+      const email = String(data.email ?? "Not Provided");
+      const company = String(data.company ?? data.business ?? "Not Provided");
+      const message = String(data.message ?? data.details ?? "Not Provided");
+      const source = String(data.source ?? data.utm_source ?? "Webhook");
+      const ts = new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" });
 
       console.log("[IDM Webhook] Lead:", { ts, name, phone, email, company, source });
 
       const wa = encodeURIComponent(
-        `🔔 *New Lead via Webhook*\n\n📅 ${ts}\n📌 Source: ${source}\n👤 ${name}\n📞 ${phone}\n📧 ${email}\n🏢 ${company}\n📝 ${message}`
+        `🔔 *New Lead via Webhook*\n\n📅 ${ts}\n📌 Source: ${source}\n👤 ${name}\n📞 ${phone}\n📧 ${email}\n🏢 ${company}\n📝 ${message}`,
       );
       return json({
         success: true,
@@ -150,7 +159,14 @@ async function handleLeadWebhook(request: Request): Promise<Response> {
         whatsapp_url: `https://wa.me/918519837818?text=${wa}`,
       });
     } catch (err) {
-      return json({ success: false, message: "Bad request", error: err instanceof Error ? err.message : "unknown" }, 400);
+      return json(
+        {
+          success: false,
+          message: "Bad request",
+          error: err instanceof Error ? err.message : "unknown",
+        },
+        400,
+      );
     }
   }
 
